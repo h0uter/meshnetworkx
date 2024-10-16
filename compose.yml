@@ -1,0 +1,17 @@
+services:
+  zenoh:
+    init: true
+    image: eclipse/zenoh
+    restart: unless-stopped
+    ports:
+      - 7447:7447
+      - 8000:8000
+    volumes:
+      - ./.zenoh_docker:/root/.zenoh
+    environment:
+      - RUST_LOG=debug
+    command: -c /root/.zenoh/zenoh-myhome.json5
+  
+  # user_1:
+   
+  # user_2:
