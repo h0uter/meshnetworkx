@@ -8,8 +8,8 @@ services:
       - 8000:8000
     volumes:
       - ./.zenoh_docker:/root/.zenoh
-    environment:
-      - RUST_LOG=debug
+    # environment:
+    #   - RUST_LOG=debug
     command: -c /root/.zenoh/zenoh-myhome.json5
     # network_mode: host
   
@@ -17,7 +17,8 @@ services:
   networkedx:
     init: true
     build: .
-    command: ["uv", "run", "nx"]
+    # command: ["uv", "run", "nx"]
+    command: ["nx"]
     depends_on:
       - zenoh
 
