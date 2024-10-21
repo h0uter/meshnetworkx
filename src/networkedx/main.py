@@ -1,3 +1,4 @@
+import json
 import pickle
 import time
 from typing import Any
@@ -17,6 +18,10 @@ def totopic(key: str):
 class GraphZ:
     def __init__(self):
         cfg = zenoh.Config()
+
+        # tell zenoh to connect to local router, cause multicast scouting does not work in docker outside of linux host.
+        cfg.insert_json5("connect/endpoints", json.dumps(["tcp/localhost:7447"]))
+
         self._z = zenoh.open(cfg)
 
     @staticmethod

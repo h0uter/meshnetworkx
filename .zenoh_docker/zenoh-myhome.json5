@@ -1,5 +1,6 @@
 {  
-  mode: "peer",
+//   mode: "peer",
+  mode: "router",  // need to run in router mode so we can connect from outside the container.
   scouting: {
     multicast: {
       enabled: true,
