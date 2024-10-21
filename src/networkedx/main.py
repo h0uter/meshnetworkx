@@ -80,15 +80,19 @@ def main():
     time.sleep(1)
     gg = zg.to_networkx()
 
+    print("")
     print(f"plotting {gg}")
     nx.draw(gg)
     plt.show()
 
     zg.clear()
+    print("")
     print("cleared graph")
     time.sleep(1)
 
     gg = zg.to_networkx()
+    print("")
+    print(f"plotting {gg}")
     nx.draw(gg)
     plt.show()
 
