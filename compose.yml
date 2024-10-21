@@ -11,7 +11,18 @@ services:
     environment:
       - RUST_LOG=debug
     command: -c /root/.zenoh/zenoh-myhome.json5
+    # network_mode: host
   
+
+  networkedx:
+    init: true
+    build: .
+    command: ["uv", "run", "nx"]
+    depends_on:
+      - zenoh
+
+
+
   # user_1:
    
   # user_2:

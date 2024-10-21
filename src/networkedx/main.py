@@ -43,13 +43,13 @@ class GraphZ:
 
     def nodes(self, data: bool = False) -> list[Any] | list[tuple[Any, Any]]:
         nodes = []
-        replies = self._z.get(f"{PREFIX}/**", zenoh.Queue())
+        replies = self._z.get(f"{PREFIX}/**", handler=zenoh.handlers.DefaultHandler())
         for reply in replies:
             reply: zenoh.Reply
             node = str(reply.ok.key_expr).split("/")[-1]
             print(node)
             if data:
-                node_data = pickle.loads(reply.ok.payload)
+                node_data = pickle.loads(reply.ok.payload.to_bytes())
                 nodes.append((node, node_data))
             else:
                 nodes.append(node)

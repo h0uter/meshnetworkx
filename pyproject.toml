@@ -5,8 +5,8 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    # "eclipse-zenoh>=1.0.0rc1",
-    "eclipse-zenoh>=0.11.0",
+    "eclipse-zenoh>=1.0.0",
+    # "eclipse-zenoh>=0.11.0",
     "humid>=0.3.1",
     "matplotlib>=3.9.2",
     "networkx>=3.4.1",
@@ -16,3 +16,6 @@ dependencies = [
 
 [project.scripts]
 nx = "networkedx.main:main"
+
+[tool.uv]
+package = true
