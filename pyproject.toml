@@ -17,5 +17,10 @@ dependencies = [
 [project.scripts]
 nx = "networkedx.main:main"
 
+[project.optional-dependencies]
+test = [
+    "pytest>=8.3.3",
+]
+
 [tool.uv]
 package = true

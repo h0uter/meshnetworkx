@@ -42,9 +42,11 @@ class GraphZ:
         data_dict.update(attr)
         data_bytes = pickle.dumps(data_dict)
         self._z.put(totopic(node), data_bytes)
+        time.sleep(0.01)
 
     def remove_node(self, node: Any) -> None:
         self._z.delete(totopic(node))
+        time.sleep(0.01)
 
     def nodes(self, data: bool = False) -> list[Any] | list[tuple[Any, Any]]:
         nodes = []
@@ -52,7 +54,7 @@ class GraphZ:
         for reply in replies:
             reply: zenoh.Reply
             node = str(reply.ok.key_expr).split("/")[-1]
-            print(node)
+            # print(node)
             if data:
                 node_data = pickle.loads(reply.ok.payload.to_bytes())
                 nodes.append((node, node_data))
@@ -64,6 +66,7 @@ class GraphZ:
     def clear(self) -> None:
         for node in self.nodes():
             self.remove_node(node)
+        time.sleep(1)
 
     def close(self) -> None:
         self._z.close()
