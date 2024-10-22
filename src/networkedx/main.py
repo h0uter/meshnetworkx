@@ -70,6 +70,11 @@ class GraphZ:
     def close(self) -> None:
         self._z.close()
 
+    def draw(self, block: bool = True) -> None:
+        nxg = self.to_networkx()
+        nx.draw(nxg)
+        plt.show(block=block)
+
 
 def main():
     print("running nx example!!!")
@@ -80,23 +85,20 @@ def main():
         zg.add_node(hfid(), color="red")
 
     time.sleep(1)
-    gg = zg.to_networkx()
 
+    print(f"plotting {zg}")
     print("")
-    print(f"plotting {gg}")
-    nx.draw(gg)
-    plt.show()
+    zg.draw()
 
+    print("clearing graph")
+    print("")
     zg.clear()
-    print("")
-    print("cleared graph")
+
     time.sleep(1)
 
-    gg = zg.to_networkx()
+    print(f"plotting {zg}")
     print("")
-    print(f"plotting {gg}")
-    nx.draw(gg)
-    plt.show()
+    zg.draw()
 
 
 if __name__ == "__main__":
