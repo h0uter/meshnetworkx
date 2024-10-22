@@ -16,7 +16,6 @@ def test_add_node(graphz):
     # Test adding a node to the graph
     graphz.add_node("node1", color="blue")
     nodes = graphz.nodes()
-    # print(graphz.nodes())
     assert "node1" in nodes
 
 def test_add_node_with_attributes(graphz):
