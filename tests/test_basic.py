@@ -1,8 +1,8 @@
-import time
-import pytest
 import networkx as nx
-from networkedx.main import GraphZ  # Assuming your file is named "graph_z.py"
-from unittest.mock import patch
+import pytest
+
+from networkedx.main import GraphZ 
+
 
 @pytest.fixture
 def graphz():
@@ -12,17 +12,23 @@ def graphz():
     g.clear()
     g.close()
 
+
 def test_add_node(graphz):
     # Test adding a node to the graph
     graphz.add_node("node1", color="blue")
     nodes = graphz.nodes()
     assert "node1" in nodes
 
+
 def test_add_node_with_attributes(graphz):
     # Test adding a node with attributes
     graphz.add_node("node2", color="green", weight=5)
     nodes = graphz.nodes(data=True)
-    assert any(node == "node2" and data["color"] == "green" and data["weight"] == 5 for node, data in nodes)
+    assert any(
+        node == "node2" and data["color"] == "green" and data["weight"] == 5
+        for node, data in nodes
+    )
+
 
 def test_remove_node(graphz):
     # Test removing a node
@@ -31,6 +37,7 @@ def test_remove_node(graphz):
     nodes = graphz.nodes()
     assert "node3" not in nodes
 
+
 def test_clear(graphz):
     # Test clearing all nodes
     graphz.add_node("node4")
@@ -38,6 +45,7 @@ def test_clear(graphz):
     graphz.clear()
     nodes = graphz.nodes()
     assert len(nodes) == 0
+
 
 def test_to_networkx(graphz):
     # Test converting to NetworkX graph
@@ -50,6 +58,7 @@ def test_to_networkx(graphz):
     assert "node7" in g.nodes
     assert g.nodes["node7"]["color"] == "red"
 
+
 def test_nodes_without_data(graphz):
     # Test getting nodes without attributes
     graphz.add_node("node8")
@@ -57,6 +66,7 @@ def test_nodes_without_data(graphz):
     nodes = graphz.nodes()
     assert "node8" in nodes
     assert "node9" in nodes
+
 
 def test_nodes_with_data(graphz):
     # Test getting nodes with attributes
