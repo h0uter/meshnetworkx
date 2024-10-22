@@ -66,7 +66,6 @@ class GraphZ:
     def clear(self) -> None:
         for node in self.nodes():
             self.remove_node(node)
-        time.sleep(1)
 
     def close(self) -> None:
         self._z.close()
