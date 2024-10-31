@@ -9,6 +9,7 @@
   - "from/to/edge_id" for a directed multi graph
 
 - check this for basic graph interface: https://github.com/networkx/networkx/blob/main/networkx/classes/graph.py
+- [ ] how to get the G.nodes[1] and G.nodes(data=True) to work at the same time?
 
 ## use allignment
 

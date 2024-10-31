@@ -10,9 +10,12 @@ from humid import hfid
 
 PREFIX = "graph"
 
+
 class ZNetworkXError(Exception):
     """General exception for ZNetworkX errors."""
+
     pass
+
 
 def totopic(key: str):
     return f"{PREFIX}/{key}"
@@ -53,7 +56,7 @@ class GraphZ:
         """
         g = nx.Graph()
 
-        for node, data in self.nodes(data=True):
+        for node, data in self.nodes(data=True).items():
             g.add_node(node, **data)
 
         return g
@@ -108,7 +111,7 @@ class GraphZ:
         """
         return node in self.nodes()
 
-    def nodes(self, data: bool = False) -> list[Any] | list[tuple[Any, Any]]:
+    def nodes(self, data: bool = False) -> dict[Any, Any] | set[Any]:
         """
         Returns a list of nodes in the GraphZ object.
 
@@ -118,7 +121,10 @@ class GraphZ:
         Returns:
             A list of nodes or a list of tuples containing nodes and their data.
         """
-        nodes = []
+        nodes = set()
+        if data:
+            nodes = {}
+
         replies = self._z.get(f"{PREFIX}/**", handler=zenoh.handlers.DefaultHandler())
         for reply in replies:
             reply: zenoh.Reply
@@ -126,10 +132,11 @@ class GraphZ:
             node = str(reply.ok.key_expr).split("/")[-1]
             node_type, node_data = pickle.loads(reply.ok.payload.to_bytes())
             node = node_type(node)
-            if data:
-                nodes.append((node, node_data))
-            else:
-                nodes.append(node)
+
+            if isinstance(nodes, dict):
+                nodes[node] = node_data
+            elif isinstance(nodes, set):
+                nodes.add(node)
 
         return nodes
 
