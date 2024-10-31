@@ -17,6 +17,9 @@ def totopic(key: str):
 
 class GraphZ:
     def __init__(self):
+        """
+        Initializes the GraphZ object and connects to the Zenoh router.
+        """
         cfg = zenoh.Config()
 
         # tell zenoh to connect to local router, cause multicast scouting does not work in docker outside of linux host.
@@ -26,10 +29,25 @@ class GraphZ:
 
     @staticmethod
     def from_networkx(g: nx.Graph) -> "GraphZ":
+        """
+        Creates a GraphZ object from a NetworkX graph.
+
+        Args:
+            g: A NetworkX graph.
+
+        Returns:
+            A GraphZ object.
+        """
         raise NotImplementedError()
         return GraphZ()
 
     def to_networkx(self) -> nx.Graph:
+        """
+        Converts the GraphZ object to a NetworkX graph.
+
+        Returns:
+            A NetworkX graph.
+        """
         g = nx.Graph()
 
         for node, data in self.nodes(data=True):
@@ -38,6 +56,13 @@ class GraphZ:
         return g
 
     def add_node(self, node: Any, **attr) -> None:
+        """
+        Adds a node to the GraphZ object.
+
+        Args:
+            node: The node to add.
+            attr: Additional attributes for the node.
+        """
         # TODO: handle node already exists
 
         data_dict = {}
@@ -66,9 +91,27 @@ class GraphZ:
         time.sleep(0.01)
 
     def has_node(self, node: Any) -> bool:
+        """
+        Checks if a node exists in the GraphZ object.
+
+        Args:
+            node: The node to check.
+
+        Returns:
+            True if the node exists, False otherwise.
+        """
         return node in self.nodes()
 
     def nodes(self, data: bool = False) -> list[Any] | list[tuple[Any, Any]]:
+        """
+        Returns a list of nodes in the GraphZ object.
+
+        Args:
+            data: If True, returns a list of tuples containing nodes and their data. If False, returns a list of nodes.
+
+        Returns:
+            A list of nodes or a list of tuples containing nodes and their data.
+        """
         nodes = []
         replies = self._z.get(f"{PREFIX}/**", handler=zenoh.handlers.DefaultHandler())
         for reply in replies:
@@ -85,16 +128,34 @@ class GraphZ:
         return nodes
 
     def clear(self) -> None:
+        """
+        Clears all nodes from the GraphZ object.
+        """
         for node in self.nodes():
             self.remove_node(node)
 
     def close(self) -> None:
+        """
+        Closes the connection to the Zenoh router.
+        """
         self._z.close()
 
     def __iter__(self):
+        """
+        Returns an iterator over the nodes in the GraphZ object.
+
+        Returns:
+            An iterator over the nodes.
+        """
         return iter(self.nodes())
 
     def draw(self, block: bool = True) -> None:
+        """
+        Draws the GraphZ object using NetworkX.
+
+        Args:
+            block: If True, blocks the drawing window. If False, does not block.
+        """
         nxg = self.to_networkx()
         nx.draw(nxg)
         plt.show(block=block)
