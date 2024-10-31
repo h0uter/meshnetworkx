@@ -10,6 +10,9 @@ from humid import hfid
 
 PREFIX = "graph"
 
+class ZNetworkXError(Exception):
+    """General exception for ZNetworkX errors."""
+    pass
 
 def totopic(key: str):
     return f"{PREFIX}/{key}"
@@ -87,6 +90,9 @@ class GraphZ:
             self.remove_node(node)
 
     def remove_node(self, node: Any) -> None:
+        # first check if the node exists
+        if not self.has_node(node):
+            raise ZNetworkXError(f"Node {node} does not exist")
         self._z.delete(totopic(node))
         time.sleep(0.01)
 

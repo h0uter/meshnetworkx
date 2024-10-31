@@ -1,16 +1,18 @@
+import time
 import networkx as nx
 import pytest
 
-from networkedx.main import GraphZ
+import networkedx.main as znx
 
 
 @pytest.fixture
 def graphz():
     # Fixture to create and teardown GraphZ instance
-    g = GraphZ()
+    g = znx.GraphZ()
     yield g
     g.clear()
     g.close()
+    time.sleep(0.5)
 
 
 def test_add_node(graphz):
@@ -19,6 +21,27 @@ def test_add_node(graphz):
     nodes = graphz.nodes()
     assert "node1" in nodes
 
+def test_add_node_hardcore(graphz):
+    G = graphz
+    G.add_node(0)
+    
+    # TODO: enable adj
+    # assert G.adj == {0: {}}
+
+    # test add attributes
+    G.add_node(1, c="red")
+    G.add_node(2, c="blue")
+    G.add_node(3, c="red")
+    assert G.nodes[1]["c"] == "red"
+    assert G.nodes[2]["c"] == "blue"
+    assert G.nodes[3]["c"] == "red"
+    # test updating attributes
+    G.add_node(1, c="blue")
+    G.add_node(2, c="red")
+    G.add_node(3, c="blue")
+    assert G.nodes[1]["c"] == "blue"
+    assert G.nodes[2]["c"] == "red"
+    assert G.nodes[3]["c"] == "blue"
 
 def test_add_nodes_from(graphz):
     G = graphz
@@ -60,6 +83,13 @@ def test_remove_node(graphz):
     nodes = graphz.nodes()
     assert "node3" not in nodes
 
+def test_remove_node_hardcore(graphz):
+    G = graphz
+    G.add_node(0)
+    G.remove_node(0)
+    # assert G.adj == {1: {2: {}}, 2: {1: {}}}
+    with pytest.raises(znx.ZNetworkXError):
+        G.remove_node(-1)
 
 def test_clear(graphz):
     # Test clearing all nodes
