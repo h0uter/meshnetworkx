@@ -23,8 +23,7 @@ WHITELIST = {
         "neighbors",
         "degree",
         "number_of_nodes",
-        "has_edge",
-        "remove_nodes_from",
+        # "remove_nodes_from",
         "edges",
         "graph_attr_dict_factory",
         "node_dict_factory",
@@ -39,9 +38,10 @@ WHITELIST = {
         "name",
         "to_undirected_class",
         "node_attr_dict_factory",
-        "add_nodes_from",
+        # "add_nodes_from",
         "copy",
-        "has_node",
+        "has_edge",
+        # "has_node",
         "is_directed",
         "order",
         "remove_edges_from",
@@ -119,3 +119,5 @@ def test_graph_attributes():
             and attr not in WHITELIST["attributes"]
         ):
             assert hasattr(graphz_graph, attr), f"Graphz is missing attribute: {attr}"
+
+# TODO: add test that checks method arguments and return types are identical as well.

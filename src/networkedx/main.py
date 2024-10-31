@@ -38,25 +38,46 @@ class GraphZ:
         return g
 
     def add_node(self, node: Any, **attr) -> None:
+        # TODO: handle node already exists
+
         data_dict = {}
         data_dict.update(attr)
-        data_bytes = pickle.dumps(data_dict)
+
+        data_bytes = pickle.dumps((type(node), data_dict))
         self._z.put(totopic(node), data_bytes)
         time.sleep(0.01)
+
+    def add_nodes_from(self, nodes: list[Any], **attr) -> None:
+        """Add nodes from a list of nodes.
+
+        Args:
+            nodes: The nodes to add.
+            **attr: The attributes to add to the nodes.
+        """
+        for node in nodes:
+            self.add_node(node, **attr)
+
+    def remove_nodes_from(self, nodes: list[Any]) -> None:
+        for node in nodes:
+            self.remove_node(node)
 
     def remove_node(self, node: Any) -> None:
         self._z.delete(totopic(node))
         time.sleep(0.01)
+
+    def has_node(self, node: Any) -> bool:
+        return node in self.nodes()
 
     def nodes(self, data: bool = False) -> list[Any] | list[tuple[Any, Any]]:
         nodes = []
         replies = self._z.get(f"{PREFIX}/**", handler=zenoh.handlers.DefaultHandler())
         for reply in replies:
             reply: zenoh.Reply
+            # the last part is the node name
             node = str(reply.ok.key_expr).split("/")[-1]
-            # print(node)
+            node_type, node_data = pickle.loads(reply.ok.payload.to_bytes())
+            node = node_type(node)
             if data:
-                node_data = pickle.loads(reply.ok.payload.to_bytes())
                 nodes.append((node, node_data))
             else:
                 nodes.append(node)
@@ -69,6 +90,9 @@ class GraphZ:
 
     def close(self) -> None:
         self._z.close()
+
+    def __iter__(self):
+        return iter(self.nodes())
 
     def draw(self, block: bool = True) -> None:
         nxg = self.to_networkx()

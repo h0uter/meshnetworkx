@@ -100,6 +100,14 @@ def test_nodes_with_data(graphz):
     assert any(node == "node11" and data["color"] == "purple" for node, data in nodes)
 
 
+@pytest.mark.skip("Not implemented")
 def test_nx_to_zgraph_to_nx():
     """Test converting a NetworkX graph to a GraphZ instance and back to NetworkX."""
-    pass
+    assert False
+
+@pytest.mark.skip("Not implemented")
+def test_duplicate_node_warning():
+    """How do we handle adding a node with a key that already exists?"""
+    graphz.add_node("node10", color="orange")
+    graphz.add_node("node10", color="purple")
+    assert False
