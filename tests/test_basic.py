@@ -1,7 +1,7 @@
 import networkx as nx
 import pytest
 
-from networkedx.main import GraphZ 
+from networkedx.main import GraphZ
 
 
 @pytest.fixture
@@ -18,6 +18,29 @@ def test_add_node(graphz):
     graphz.add_node("node1", color="blue")
     nodes = graphz.nodes()
     assert "node1" in nodes
+
+
+def test_add_nodes_from(graphz):
+    G = graphz
+    G.add_nodes_from(list("ABCDEFGHIJKL"))
+    assert G.has_node("L")
+    G.remove_nodes_from(["H", "I", "J", "K", "L"])
+    G.add_nodes_from([1, 2, 3, 4])
+    assert sorted(G.nodes(), key=str) == [
+        1,
+        2,
+        3,
+        4,
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+    ]
+    # test __iter__
+    assert sorted(G, key=str) == [1, 2, 3, 4, "A", "B", "C", "D", "E", "F", "G"]
 
 
 def test_add_node_with_attributes(graphz):
@@ -75,3 +98,8 @@ def test_nodes_with_data(graphz):
     nodes = graphz.nodes(data=True)
     assert any(node == "node10" and data["color"] == "orange" for node, data in nodes)
     assert any(node == "node11" and data["color"] == "purple" for node, data in nodes)
+
+
+def test_nx_to_zgraph_to_nx():
+    """Test converting a NetworkX graph to a GraphZ instance and back to NetworkX."""
+    pass
