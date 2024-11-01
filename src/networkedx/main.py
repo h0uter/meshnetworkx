@@ -11,6 +11,7 @@ from humid import hfid
 PREFIX = "graph"
 WAIT_TIME = 0.0001
 
+
 class ZNetworkXError(Exception):
     """General exception for ZNetworkX errors."""
 
@@ -178,7 +179,6 @@ class GraphZ:
         if not self.has_node(node):
             raise ZNetworkXError(f"Node {node} does not exist")
 
-
         self._z.delete(totopic(node))
         self._z.delete(totopic(f"{node}/to/*"))
         self._z.delete(totopic(f"*/to/{node}"))
@@ -211,7 +211,7 @@ class GraphZ:
         if data:
             nodes = {}
 
-        replies = self._z.get(f"{PREFIX}/*", handler=zenoh.handlers.DefaultHandler())
+        replies = self._z.get(totopic("*"), handler=zenoh.handlers.DefaultHandler())
         for reply in replies:
             reply: zenoh.Reply
             # the last part is the node name
@@ -229,8 +229,6 @@ class GraphZ:
         """
         Clears all nodes from the GraphZ object.
         """
-        # for node in self.nodes():
-        #     self.remove_node(node)
 
         self._z.delete(totopic("**"))
 
