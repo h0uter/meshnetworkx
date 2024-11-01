@@ -9,7 +9,7 @@ import zenoh
 from humid import hfid
 
 PREFIX = "graph"
-
+WAIT_TIME = 0.0001
 
 class ZNetworkXError(Exception):
     """General exception for ZNetworkX errors."""
@@ -82,7 +82,7 @@ class GraphZ:
         data_bytes = pickle.dumps(data_dict)
         self._z.put(totopic(node), data_bytes)
         # TODO: instead wait till we can read it back
-        time.sleep(0.001)
+        time.sleep(WAIT_TIME)
 
     def add_edge(self, u: Any, v: Any, **attr) -> None:
         """
@@ -109,7 +109,7 @@ class GraphZ:
         key = f"{u}/to/{v}" if u < v else f"{v}/to/{u}"
         self._z.put(totopic(key), data_bytes)
         # TODO: instead wait till we can read it back
-        time.sleep(0.001)
+        time.sleep(WAIT_TIME)
 
     def remove_edge(self, u: Any, v: Any) -> None:
         """
@@ -124,7 +124,7 @@ class GraphZ:
 
         key = f"{u}/to/{v}" if u < v else f"{v}/to/{u}"
         self._z.delete(totopic(key))
-        time.sleep(0.001)
+        time.sleep(WAIT_TIME)
 
     @property
     def adj(self):
@@ -178,17 +178,11 @@ class GraphZ:
         if not self.has_node(node):
             raise ZNetworkXError(f"Node {node} does not exist")
 
-        # bad = self.adj
-        # outer = bad.get(node, {})
-        # for n in outer:
-        #     self._z.delete(totopic(f"{node}/to/{n}"))
-        #     self._z.delete(totopic(f"{n}/to/{node}"))
 
         self._z.delete(totopic(node))
         self._z.delete(totopic(f"{node}/to/*"))
-        # self._z.delete(totopic(f"{node}/to"))
         self._z.delete(totopic(f"*/to/{node}"))
-        time.sleep(0.01)
+        time.sleep(WAIT_TIME)
 
     def has_node(self, node: Any) -> bool:
         """
