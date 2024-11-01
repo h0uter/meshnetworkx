@@ -22,3 +22,7 @@ https://zenoh.io/blog/2022-11-29-zenoh-alignment/
 - need to be able to quickly search the graph
   - for nodes
   - for edges
+
+## differences with networkx
+
+- nodes and edges cannot be any object, they have to be convertable to string.
