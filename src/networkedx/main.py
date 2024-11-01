@@ -96,6 +96,12 @@ class GraphZ:
         try_str(u)
         try_str(v)
 
+        # check if the nodes exist, else create them
+        if not self.has_node(u):
+            self.add_node(u)
+        if not self.has_node(v):
+            self.add_node(v)
+
         data_dict = {}
         data_dict.update(attr)
         data_bytes = pickle.dumps(data_dict)
@@ -171,17 +177,17 @@ class GraphZ:
         # check if the node exists
         if not self.has_node(node):
             raise ZNetworkXError(f"Node {node} does not exist")
-        
-        bad = self.adj
-        outer = bad.get(node, {})
-        for n in outer:
-            self._z.delete(totopic(f"{node}/to/{n}"))
-            self._z.delete(totopic(f"{n}/to/{node}"))
+
+        # bad = self.adj
+        # outer = bad.get(node, {})
+        # for n in outer:
+        #     self._z.delete(totopic(f"{node}/to/{n}"))
+        #     self._z.delete(totopic(f"{n}/to/{node}"))
 
         self._z.delete(totopic(node))
-        # self._z.delete(totopic(f"{node}/to/*"))
+        self._z.delete(totopic(f"{node}/to/*"))
         # self._z.delete(totopic(f"{node}/to"))
-        # self._z.delete(totopic(f"*/to/{node}"))
+        self._z.delete(totopic(f"*/to/{node}"))
         time.sleep(0.01)
 
     def has_node(self, node: Any) -> bool:
@@ -229,8 +235,10 @@ class GraphZ:
         """
         Clears all nodes from the GraphZ object.
         """
-        for node in self.nodes():
-            self.remove_node(node)
+        # for node in self.nodes():
+        #     self.remove_node(node)
+
+        self._z.delete(totopic("**"))
 
     def close(self) -> None:
         """
