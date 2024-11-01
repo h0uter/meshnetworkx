@@ -161,11 +161,15 @@ def test_nodes_with_data(graphz):
         node == "node11" and data["color"] == "purple" for node, data in nodes.items()
     )
 
-
-@pytest.mark.skip("Not implemented")
-def test_nx_to_zgraph_to_nx():
+def test_nx_to_zgraph_to_nx_nodes_only():
     """Test converting a NetworkX graph to a GraphZ instance and back to NetworkX."""
-    assert False
+    G = nx.Graph()
+    G.add_nodes_from(list("ABCDEFGHIJKL"))
+    Z = znx.GraphZ.from_networkx(G)
+
+    G2 = Z.to_networkx()
+
+    assert sorted(G.nodes()) == sorted(G2.nodes())
 
 
 @pytest.mark.skip("Not implemented")

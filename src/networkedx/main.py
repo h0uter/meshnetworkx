@@ -44,7 +44,12 @@ class GraphZ:
         Returns:
             A GraphZ object.
         """
-        raise NotImplementedError()
+        nodes = list(g.nodes)
+
+        zg = GraphZ()
+        zg.add_nodes_from(nodes)
+    
+
         return GraphZ()
 
     def to_networkx(self) -> nx.Graph:
