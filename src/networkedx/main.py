@@ -48,7 +48,6 @@ class GraphZ:
 
         zg = GraphZ()
         zg.add_nodes_from(nodes)
-    
 
         return GraphZ()
 
@@ -75,13 +74,84 @@ class GraphZ:
             attr: Additional attributes for the node.
         """
         # TODO: handle node already exists
+        try_str(node)
 
         data_dict = {}
         data_dict.update(attr)
 
-        data_bytes = pickle.dumps((type(node), data_dict))
+        data_bytes = pickle.dumps(data_dict)
         self._z.put(totopic(node), data_bytes)
-        time.sleep(0.01)
+        # TODO: instead wait till we can read it back
+        time.sleep(0.001)
+
+    def add_edge(self, u: Any, v: Any, **attr) -> None:
+        """
+        Adds an edge to the GraphZ object.
+
+        Args:
+            u: The source node.
+            v: The target node.
+            attr: Additional attributes for the edge.
+        """
+        try_str(u)
+        try_str(v)
+
+        data_dict = {}
+        data_dict.update(attr)
+        data_bytes = pickle.dumps(data_dict)
+
+        key = f"{u}/to/{v}" if u < v else f"{v}/to/{u}"
+        self._z.put(totopic(key), data_bytes)
+        # TODO: instead wait till we can read it back
+        time.sleep(0.001)
+
+    def remove_edge(self, u: Any, v: Any) -> None:
+        """
+        Removes an edge from the GraphZ object.
+
+        Args:
+            u: The source node.
+            v: The target node.
+        """
+        try_str(u)
+        try_str(v)
+
+        key = f"{u}/to/{v}" if u < v else f"{v}/to/{u}"
+        self._z.delete(totopic(key))
+        time.sleep(0.001)
+
+    @property
+    def adj(self):
+        """
+        Returns the adjacency list of the GraphZ object.
+
+        Returns:
+            The adjacency list.
+        """
+        adj = {}
+        replies = self._z.get(
+            totopic("*/to/*"), handler=zenoh.handlers.DefaultHandler()
+        )
+
+        for reply in replies:
+            reply: zenoh.Reply
+
+            data = pickle.loads(reply.ok.payload.to_bytes())
+            print("data", data)
+
+            # the last part is the node name
+            u = str(reply.ok.key_expr).split("/")[-1]
+            v = str(reply.ok.key_expr).split("/")[-3]
+
+            # add the edge to the adjacency list
+            if u not in adj:
+                adj[u] = {}
+            adj[u][v] = {}
+            if v not in adj:
+                adj[v] = {}
+            adj[v][u] = {}
+
+        return adj
 
     def add_nodes_from(self, nodes: list[Any], **attr) -> None:
         """Add nodes from a list of nodes.
@@ -98,10 +168,20 @@ class GraphZ:
             self.remove_node(node)
 
     def remove_node(self, node: Any) -> None:
-        # first check if the node exists
+        # check if the node exists
         if not self.has_node(node):
             raise ZNetworkXError(f"Node {node} does not exist")
+        
+        bad = self.adj
+        outer = bad.get(node, {})
+        for n in outer:
+            self._z.delete(totopic(f"{node}/to/{n}"))
+            self._z.delete(totopic(f"{n}/to/{node}"))
+
         self._z.delete(totopic(node))
+        # self._z.delete(totopic(f"{node}/to/*"))
+        # self._z.delete(totopic(f"{node}/to"))
+        # self._z.delete(totopic(f"*/to/{node}"))
         time.sleep(0.01)
 
     def has_node(self, node: Any) -> bool:
@@ -114,7 +194,8 @@ class GraphZ:
         Returns:
             True if the node exists, False otherwise.
         """
-        return node in self.nodes()
+        try_str(node)
+        return str(node) in self.nodes()
 
     def nodes(self, data: bool = False) -> dict[Any, Any] | set[Any]:
         """
@@ -130,13 +211,12 @@ class GraphZ:
         if data:
             nodes = {}
 
-        replies = self._z.get(f"{PREFIX}/**", handler=zenoh.handlers.DefaultHandler())
+        replies = self._z.get(f"{PREFIX}/*", handler=zenoh.handlers.DefaultHandler())
         for reply in replies:
             reply: zenoh.Reply
             # the last part is the node name
             node = str(reply.ok.key_expr).split("/")[-1]
-            node_type, node_data = pickle.loads(reply.ok.payload.to_bytes())
-            node = node_type(node)
+            node_data = pickle.loads(reply.ok.payload.to_bytes())
 
             if isinstance(nodes, dict):
                 nodes[node] = node_data
@@ -202,6 +282,15 @@ def main():
     print(f"plotting {zg}")
     print("")
     zg.draw()
+
+
+def try_str(key: Any):
+    if key is None:
+        raise ValueError("Item cannot be None.")
+    try:
+        str(key)
+    except Exception as e:
+        raise ZNetworkXError(f"Item '{key}' cannot be converted to string.") from e
 
 
 if __name__ == "__main__":

@@ -33,16 +33,16 @@ def test_add_node_hardcore(graphz):
     G.add_node(1, c="red")
     G.add_node(2, c="blue")
     G.add_node(3, c="red")
-    assert G.nodes(data=True)[1]["c"] == "red"
-    assert G.nodes(data=True)[2]["c"] == "blue"
-    assert G.nodes(data=True)[3]["c"] == "red"
+    assert G.nodes(data=True)["1"]["c"] == "red"
+    assert G.nodes(data=True)["2"]["c"] == "blue"
+    assert G.nodes(data=True)["3"]["c"] == "red"
     # test updating attributes
     G.add_node(1, c="blue")
     G.add_node(2, c="red")
     G.add_node(3, c="blue")
-    assert G.nodes(data=True)[1]["c"] == "blue"
-    assert G.nodes(data=True)[2]["c"] == "red"
-    assert G.nodes(data=True)[3]["c"] == "blue"
+    assert G.nodes(data=True)["1"]["c"] == "blue"
+    assert G.nodes(data=True)["2"]["c"] == "red"
+    assert G.nodes(data=True)["3"]["c"] == "blue"
 
 
 @pytest.mark.skip("Real nx interface does not have G.nodes()[1]")
@@ -57,16 +57,16 @@ def test_add_node_hardcore_correct(graphz):
     G.add_node(1, c="red")
     G.add_node(2, c="blue")
     G.add_node(3, c="red")
-    assert G.nodes[1]["c"] == "red"
-    assert G.nodes[2]["c"] == "blue"
-    assert G.nodes[3]["c"] == "red"
+    assert G.nodes["1"]["c"] == "red"
+    assert G.nodes["2"]["c"] == "blue"
+    assert G.nodes["3"]["c"] == "red"
     # test updating attributes
     G.add_node(1, c="blue")
     G.add_node(2, c="red")
     G.add_node(3, c="blue")
-    assert G.nodes[1]["c"] == "blue"
-    assert G.nodes[2]["c"] == "red"
-    assert G.nodes[3]["c"] == "blue"
+    assert G.nodes["1"]["c"] == "blue"
+    assert G.nodes["2"]["c"] == "red"
+    assert G.nodes["3"]["c"] == "blue"
 
 
 def test_add_nodes_from(graphz):
@@ -76,10 +76,10 @@ def test_add_nodes_from(graphz):
     G.remove_nodes_from(["H", "I", "J", "K", "L"])
     G.add_nodes_from([1, 2, 3, 4])
     assert sorted(G.nodes(), key=str) == [
-        1,
-        2,
-        3,
-        4,
+        "1",
+        "2",
+        "3",
+        "4",
         "A",
         "B",
         "C",
@@ -89,7 +89,7 @@ def test_add_nodes_from(graphz):
         "G",
     ]
     # test __iter__
-    assert sorted(G, key=str) == [1, 2, 3, 4, "A", "B", "C", "D", "E", "F", "G"]
+    assert sorted(G, key=str) == ["1", "2", "3", "4", "A", "B", "C", "D", "E", "F", "G"]
 
 
 def test_add_node_with_attributes(graphz):
@@ -105,6 +105,9 @@ def test_add_node_with_attributes(graphz):
 def test_remove_node(graphz):
     # Test removing a node
     graphz.add_node("node3")
+    nodes = graphz.nodes()
+    assert "node3" in nodes
+
     graphz.remove_node("node3")
     nodes = graphz.nodes()
     assert "node3" not in nodes
@@ -112,9 +115,12 @@ def test_remove_node(graphz):
 
 def test_remove_node_hardcore(graphz):
     G = graphz
+    G.add_edge(1, 2)
+    assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
     G.add_node(0)
+    G.add_edge(0, 1)
     G.remove_node(0)
-    # assert G.adj == {1: {2: {}}, 2: {1: {}}}
+    assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
     with pytest.raises(znx.ZNetworkXError):
         G.remove_node(-1)
 
@@ -161,6 +167,7 @@ def test_nodes_with_data(graphz):
         node == "node11" and data["color"] == "purple" for node, data in nodes.items()
     )
 
+
 def test_nx_to_zgraph_to_nx_nodes_only():
     """Test converting a NetworkX graph to a GraphZ instance and back to NetworkX."""
     G = nx.Graph()
@@ -178,3 +185,98 @@ def test_duplicate_node_warning():
     graphz.add_node("node10", color="orange")
     graphz.add_node("node10", color="purple")
     assert False
+
+
+def test_add_edge(graphz):
+    G = graphz
+    G.add_edge(0, 1)
+    assert G.adj == {"0": {"1": {}}, "1": {"0": {}}}
+    G = graphz
+    G.add_edge(*(0, 1))
+    assert G.adj == {"0": {"1": {}}, "1": {"0": {}}}
+    G = graphz
+    with pytest.raises(ValueError):
+        G.add_edge(None, "anything")
+
+
+def test_remove_edge(graphz):
+    G = graphz
+    G.add_edge(1, 2, weight=3)
+    assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
+    G.remove_edge(1, 2)
+    assert G.adj == {}
+
+
+def test_remove_edge_2(graphz):
+    G = graphz
+    G.add_edge(1, 2, weight=3)
+    assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
+    G.add_edge(0, 1, weight=2)
+    assert G.adj == {"0": {"1": {}}, "1": {"2": {}, "0": {}}, "2": {"1": {}}}
+    G.remove_edge(0, 1)
+    assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
+
+
+@pytest.mark.skip("TODO")
+def test_add_edges_from(self):
+    G = self.Graph()
+    G.add_edges_from([(0, 1), (0, 2, {"weight": 3})])
+    assert G.adj == {
+        0: {1: {}, 2: {"weight": 3}},
+        1: {0: {}},
+        2: {0: {"weight": 3}},
+    }
+    G = self.Graph()
+    G.add_edges_from([(0, 1), (0, 2, {"weight": 3}), (1, 2, {"data": 4})], data=2)
+    assert G.adj == {
+        0: {1: {"data": 2}, 2: {"weight": 3, "data": 2}},
+        1: {0: {"data": 2}, 2: {"data": 4}},
+        2: {0: {"weight": 3, "data": 2}, 1: {"data": 4}},
+    }
+
+    with pytest.raises(nx.NetworkXError):
+        G.add_edges_from([(0,)])  # too few in tuple
+    with pytest.raises(nx.NetworkXError):
+        G.add_edges_from([(0, 1, 2, 3)])  # too many in tuple
+    with pytest.raises(TypeError):
+        G.add_edges_from([0])  # not a tuple
+    with pytest.raises(ValueError):
+        G.add_edges_from([(None, 3), (3, 2)])  # None cannot be a node
+
+
+# @pytest.mark.skip("TODO")
+# def test_remove_edge(self):
+#     G = self.K3.copy()
+#     G.remove_edge(0, 1)
+#     assert G.adj == {0: {2: {}}, 1: {2: {}}, 2: {0: {}, 1: {}}}
+#     with pytest.raises(nx.NetworkXError):
+#         G.remove_edge(-1, 0)
+
+
+@pytest.mark.skip("TODO")
+def test_remove_edges_from(self):
+    G = self.K3.copy()
+    G.remove_edges_from([(0, 1)])
+    assert G.adj == {0: {2: {}}, 1: {2: {}}, 2: {0: {}, 1: {}}}
+    G.remove_edges_from([(0, 0)])  # silent fail
+
+
+@pytest.mark.skip("TODO")
+def test_clear_orig(self):
+    G = self.K3.copy()
+    G.graph["name"] = "K3"
+    G.clear()
+    assert list(G.nodes) == []
+    assert G.adj == {}
+    assert G.graph == {}
+
+
+def test_removing_node_removes_edge(graphz):
+    G = graphz
+    G.add_edge(1, 2, weight=3)
+    assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
+    G.add_edge(0, 1, weight=2)
+    assert G.adj == {"0": {"1": {}}, "1": {"2": {}, "0": {}}, "2": {"1": {}}}
+    G.remove_node(0)
+    time.sleep(1)
+    assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
