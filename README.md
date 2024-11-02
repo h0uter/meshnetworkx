@@ -19,9 +19,17 @@ Then run an example with `python examples/main.py`
 
 - The graph is stored in a zenoh storage, which is a key-value store.
 - The nodes and edges are stored as keys in the zenoh storage.
-- The graph is synced between devices using zenoh Storages.
+- The graph is synced between devices using zenoh Storages. This protocol automagically orchestrates allignment between storages, even if the network becomes partitioned and then later reconnects.
 
 ## Example
+
+Assuming:
+
+- you have two devices, and you want to create a graph on one device and access it on the other device.
+- you have a zenoh storage running on both devices.
+- Both devices can find each other using zenoh discovery (local network or using a Zenoh Router).
+
+On device one:
 
 ```python
 import networkedx as znx
@@ -29,7 +37,15 @@ import networkedx as znx
 G = znx.Graph()
 G.add_node(1, data="data")
 G.add_edge(1, 2, data="data")
+
+```
+
+After that on device two:
+
+```python
+import networkedx as znx
+
+G = znx.Graph()
 print(G.nodes(data=True))
 >>> [(1, {'data': 'data'}), (2, {})]
-
 ```
