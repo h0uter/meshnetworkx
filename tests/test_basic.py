@@ -1,3 +1,5 @@
+"""This module contains basic tests for the GraphZ class."""
+
 import time
 
 import networkx as nx
@@ -22,6 +24,7 @@ def test_add_node(graphz):
     assert "node1" in nodes
 
 
+@pytest.mark.skip("Real nx interface does not have G.nodes()[1]")
 def test_add_node_hardcore(graphz):
     G = graphz
     G.add_node(0)
@@ -45,7 +48,7 @@ def test_add_node_hardcore(graphz):
     assert G.nodes(data=True)["3"]["c"] == "blue"
 
 
-@pytest.mark.skip("Real nx interface does not have G.nodes()[1]")
+# @pytest.mark.skip("Real nx interface does not have G.nodes()[1]")
 def test_add_node_hardcore_correct(graphz):
     G = graphz
     G.add_node(0)
@@ -98,7 +101,7 @@ def test_add_node_with_attributes(graphz):
     nodes = graphz.nodes(data=True)
     assert any(
         node == "node2" and data["color"] == "green" and data["weight"] == 5
-        for node, data in nodes.items()
+        for node, data in nodes
     )
 
 
@@ -159,12 +162,8 @@ def test_nodes_with_data(graphz):
     graphz.add_node("node10", color="orange")
     graphz.add_node("node11", color="purple")
     nodes = graphz.nodes(data=True)
-    assert any(
-        node == "node10" and data["color"] == "orange" for node, data in nodes.items()
-    )
-    assert any(
-        node == "node11" and data["color"] == "purple" for node, data in nodes.items()
-    )
+    assert any(node == "node10" and data["color"] == "orange" for node, data in nodes)
+    assert any(node == "node11" and data["color"] == "purple" for node, data in nodes)
 
 
 def test_nx_to_zgraph_to_nx_nodes_only():

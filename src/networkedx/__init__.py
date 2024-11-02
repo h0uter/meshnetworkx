@@ -23,6 +23,21 @@ def _totopic(key: str):
     return f"{PREFIX}/{key}"
 
 
+class NodeView:
+    def __init__(self, node_data: dict[Any, Any]):
+        self._node_data = node_data  # Dictionary to store node data
+
+    def __getitem__(self, key: Any):
+        # Allow dictionary-like access
+        return self._node_data[key]
+
+    def __call__(self, data: bool = False):
+        # Method-like access with optional arguments
+        if data:
+            return self._node_data.items()  # Return nodes with data
+        return self._node_data.keys()  # Return just node identifiers
+
+
 class GraphZ:
     """Represents a NetworkX graph stored in Zenoh."""
 
@@ -61,7 +76,7 @@ class GraphZ:
         """
         g = nx.Graph()
 
-        for node, data in self.nodes(data=True).items():
+        for node, data in self.nodes(data=True):
             g.add_node(node, **data)
 
         return g
@@ -203,7 +218,9 @@ class GraphZ:
         _try_str(node)
         return str(node) in self.nodes()
 
-    def nodes(self, data: bool = False) -> dict[Any, Any] | set[Any]:
+    # def nodes(self, data: bool = False) -> dict[Any, Any] | set[Any]:
+    @property
+    def nodes(self) -> NodeView:
         """Returns a list of nodes in the GraphZ object.
 
         Args:
@@ -213,9 +230,9 @@ class GraphZ:
         Returns:
             A list of nodes or a list of tuples containing nodes and their data.
         """
-        nodes = set()
-        if data:
-            nodes = {}
+        # nodes = set()
+        # if data:
+        nodes = {}
 
         replies = self._z.get(_totopic("*"), handler=zenoh.handlers.DefaultHandler())
         for reply in replies:
@@ -227,12 +244,12 @@ class GraphZ:
             node = str(reply.ok.key_expr).split("/")[-1]
             node_data = pickle.loads(reply.ok.payload.to_bytes())
 
-            if isinstance(nodes, dict):
-                nodes[node] = node_data
-            elif isinstance(nodes, set):
-                nodes.add(node)
+            # if isinstance(nodes, dict):
+            nodes[node] = node_data
+            # elif isinstance(nodes, set):
+            #     nodes.add(node)
 
-        return nodes
+        return NodeView(nodes)
 
     def clear(self) -> None:
         """Clears all nodes from the GraphZ object."""
