@@ -1,7 +1,7 @@
 import networkx as nx
 import pytest
 
-from networkedx.main import GraphZ
+from networkedx import GraphZ
 
 # Define a whitelist of interface elements differences that can be ignored
 WHITELIST = {

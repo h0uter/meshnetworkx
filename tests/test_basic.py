@@ -3,7 +3,7 @@ import time
 import networkx as nx
 import pytest
 
-import networkedx.main as znx
+import networkedx as znx
 
 
 @pytest.fixture

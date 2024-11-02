@@ -24,3 +24,6 @@ test = [
 
 [tool.uv]
 package = true
+
+[tool.ruff]
+select = ["ALL"]

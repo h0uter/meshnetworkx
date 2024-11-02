@@ -6,7 +6,6 @@ from typing import Any
 import matplotlib.pyplot as plt
 import networkx as nx
 import zenoh
-from humid import hfid
 
 PREFIX = "graph"
 WAIT_TIME = 0.0001

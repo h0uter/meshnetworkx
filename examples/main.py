@@ -2,7 +2,7 @@ import time
 
 from humid import hfid
 
-import networkedx.main as znx
+import networkedx as znx
 
 
 def main():
