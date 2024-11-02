@@ -143,7 +143,6 @@ class GraphZ:
         for reply in replies:
             reply: zenoh.Reply
 
-
             if reply.err:
                 raise ZNetworkXError(f"Error: {reply.err.payload.to_string()}")
 
@@ -217,6 +216,9 @@ class GraphZ:
         for reply in replies:
             reply: zenoh.Reply
             # the last part is the node name
+            if not reply.ok:
+                raise ZNetworkXError(f"Error: {reply.err.payload.to_string()}")
+
             node = str(reply.ok.key_expr).split("/")[-1]
             node_data = pickle.loads(reply.ok.payload.to_bytes())
 
@@ -261,31 +263,6 @@ class GraphZ:
         plt.show(block=block)
 
 
-def main():
-    print("running nx example!!!")
-    print()
-
-    zg = GraphZ()
-    for _ in range(10):
-        zg.add_node(hfid(), color="red")
-
-    time.sleep(1)
-
-    print(f"plotting {zg}")
-    print("")
-    zg.draw()
-
-    print("clearing graph")
-    print("")
-    zg.clear()
-
-    time.sleep(1)
-
-    print(f"plotting {zg}")
-    print("")
-    zg.draw()
-
-
 def try_str(key: Any):
     if key is None:
         raise ValueError("Item cannot be None.")
@@ -293,7 +270,3 @@ def try_str(key: Any):
         str(key)
     except Exception as e:
         raise ZNetworkXError(f"Item '{key}' cannot be converted to string.") from e
-
-
-if __name__ == "__main__":
-    main()
