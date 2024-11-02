@@ -32,3 +32,12 @@ Then run an example with `python examples/main.py`
 ## differences with networkx
 
 - nodes and edges cannot be any object, they have to be convertable to string.
+
+
+## name ideas
+
+- nx-zenoh
+- znetworkx
+- zenoh-nx
+- zenoh-networkx
+- zgraph
