@@ -146,6 +146,9 @@ class GraphZ:
             data = pickle.loads(reply.ok.payload.to_bytes())
             print("data", data)
 
+            if reply.ok is None:
+                raise ZNetworkXError(f"Error getting adjacency list: {reply.result}")
+
             # the last part is the node name
             u = str(reply.ok.key_expr).split("/")[-1]
             v = str(reply.ok.key_expr).split("/")[-3]
