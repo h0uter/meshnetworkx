@@ -1,3 +1,5 @@
+"""Provides the GraphZ class for storing a NetworkX graph in Zenoh."""
+
 import json
 import pickle
 import time
@@ -22,11 +24,14 @@ def _totopic(key: str):
 
 
 class GraphZ:
+    """Represents a NetworkX graph stored in Zenoh."""
+
     def __init__(self):
         """Initializes the GraphZ object and connects to the Zenoh router."""
         cfg = zenoh.Config()
 
-        # tell zenoh to connect to local router, cause multicast scouting does not work in docker outside of linux host.
+        # tell zenoh to connect to local router,
+        # cause multicast scouting does not work in docker outside of linux host.
         cfg.insert_json5("connect/endpoints", json.dumps(["tcp/localhost:7447"]))
 
         self._z = zenoh.open(cfg)
@@ -163,10 +168,20 @@ class GraphZ:
             self.add_node(node, **attr)
 
     def remove_nodes_from(self, nodes: list[Any]) -> None:
+        """Removes nodes from the GraphZ object.
+
+        Args:
+            nodes: The nodes to remove.
+        """
         for node in nodes:
             self.remove_node(node)
 
     def remove_node(self, node: Any) -> None:
+        """Removes a node from the GraphZ object.
+
+        Args:
+            node: The node to remove.
+        """
         # check if the node exists
         if not self.has_node(node):
             raise ZNetworkXError(f"Node {node} does not exist")
@@ -192,7 +207,8 @@ class GraphZ:
         """Returns a list of nodes in the GraphZ object.
 
         Args:
-            data: If True, returns a list of tuples containing nodes and their data. If False, returns a list of nodes.
+            data: If True, returns a list of tuples containing nodes and their data.
+            If False, returns a list of nodes.
 
         Returns:
             A list of nodes or a list of tuples containing nodes and their data.
