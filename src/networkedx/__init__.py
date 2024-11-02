@@ -17,15 +17,13 @@ class ZNetworkXError(Exception):
     pass
 
 
-def totopic(key: str):
+def _totopic(key: str):
     return f"{PREFIX}/{key}"
 
 
 class GraphZ:
     def __init__(self):
-        """
-        Initializes the GraphZ object and connects to the Zenoh router.
-        """
+        """Initializes the GraphZ object and connects to the Zenoh router."""
         cfg = zenoh.Config()
 
         # tell zenoh to connect to local router, cause multicast scouting does not work in docker outside of linux host.
@@ -35,8 +33,7 @@ class GraphZ:
 
     @staticmethod
     def from_networkx(g: nx.Graph) -> "GraphZ":
-        """
-        Creates a GraphZ object from a NetworkX graph.
+        """Creates a GraphZ object from a NetworkX graph.
 
         Args:
             g: A NetworkX graph.
@@ -52,8 +49,7 @@ class GraphZ:
         return GraphZ()
 
     def to_networkx(self) -> nx.Graph:
-        """
-        Converts the GraphZ object to a NetworkX graph.
+        """Converts the GraphZ object to a NetworkX graph.
 
         Returns:
             A NetworkX graph.
@@ -66,35 +62,33 @@ class GraphZ:
         return g
 
     def add_node(self, node: Any, **attr) -> None:
-        """
-        Adds a node to the GraphZ object.
+        """Adds a node to the GraphZ object.
 
         Args:
             node: The node to add.
             attr: Additional attributes for the node.
         """
         # TODO: handle node already exists
-        try_str(node)
+        _try_str(node)
 
         data_dict = {}
         data_dict.update(attr)
 
         data_bytes = pickle.dumps(data_dict)
-        self._z.put(totopic(node), data_bytes)
+        self._z.put(_totopic(node), data_bytes)
         # TODO: instead wait till we can read it back
         time.sleep(WAIT_TIME)
 
     def add_edge(self, u: Any, v: Any, **attr) -> None:
-        """
-        Adds an edge to the GraphZ object.
+        """Adds an edge to the GraphZ object.
 
         Args:
             u: The source node.
             v: The target node.
             attr: Additional attributes for the edge.
         """
-        try_str(u)
-        try_str(v)
+        _try_str(u)
+        _try_str(v)
 
         # check if the nodes exist, else create them
         if not self.has_node(u):
@@ -107,36 +101,34 @@ class GraphZ:
         data_bytes = pickle.dumps(data_dict)
 
         key = f"{u}/to/{v}" if u < v else f"{v}/to/{u}"
-        self._z.put(totopic(key), data_bytes)
+        self._z.put(_totopic(key), data_bytes)
         # TODO: instead wait till we can read it back
         time.sleep(WAIT_TIME)
 
     def remove_edge(self, u: Any, v: Any) -> None:
-        """
-        Removes an edge from the GraphZ object.
+        """Removes an edge from the GraphZ object.
 
         Args:
             u: The source node.
             v: The target node.
         """
-        try_str(u)
-        try_str(v)
+        _try_str(u)
+        _try_str(v)
 
         key = f"{u}/to/{v}" if u < v else f"{v}/to/{u}"
-        self._z.delete(totopic(key))
+        self._z.delete(_totopic(key))
         time.sleep(WAIT_TIME)
 
     @property
     def adj(self):
-        """
-        Returns the adjacency list of the GraphZ object.
+        """Returns the adjacency list of the GraphZ object.
 
         Returns:
             The adjacency list.
         """
         adj = {}
         replies = self._z.get(
-            totopic("*/to/*"), handler=zenoh.handlers.DefaultHandler()
+            _totopic("*/to/*"), handler=zenoh.handlers.DefaultHandler()
         )
 
         for reply in replies:
@@ -179,14 +171,13 @@ class GraphZ:
         if not self.has_node(node):
             raise ZNetworkXError(f"Node {node} does not exist")
 
-        self._z.delete(totopic(node))
-        self._z.delete(totopic(f"{node}/to/*"))
-        self._z.delete(totopic(f"*/to/{node}"))
+        self._z.delete(_totopic(node))
+        self._z.delete(_totopic(f"{node}/to/*"))
+        self._z.delete(_totopic(f"*/to/{node}"))
         time.sleep(WAIT_TIME)
 
     def has_node(self, node: Any) -> bool:
-        """
-        Checks if a node exists in the GraphZ object.
+        """Checks if a node exists in the GraphZ object.
 
         Args:
             node: The node to check.
@@ -194,12 +185,11 @@ class GraphZ:
         Returns:
             True if the node exists, False otherwise.
         """
-        try_str(node)
+        _try_str(node)
         return str(node) in self.nodes()
 
     def nodes(self, data: bool = False) -> dict[Any, Any] | set[Any]:
-        """
-        Returns a list of nodes in the GraphZ object.
+        """Returns a list of nodes in the GraphZ object.
 
         Args:
             data: If True, returns a list of tuples containing nodes and their data. If False, returns a list of nodes.
@@ -211,7 +201,7 @@ class GraphZ:
         if data:
             nodes = {}
 
-        replies = self._z.get(totopic("*"), handler=zenoh.handlers.DefaultHandler())
+        replies = self._z.get(_totopic("*"), handler=zenoh.handlers.DefaultHandler())
         for reply in replies:
             reply: zenoh.Reply
             # the last part is the node name
@@ -229,21 +219,15 @@ class GraphZ:
         return nodes
 
     def clear(self) -> None:
-        """
-        Clears all nodes from the GraphZ object.
-        """
-
-        self._z.delete(totopic("**"))
+        """Clears all nodes from the GraphZ object."""
+        self._z.delete(_totopic("**"))
 
     def close(self) -> None:
-        """
-        Closes the connection to the Zenoh router.
-        """
+        """Closes the connection to the Zenoh router."""
         self._z.close()
 
     def __iter__(self):
-        """
-        Returns an iterator over the nodes in the GraphZ object.
+        """Returns an iterator over the nodes in the GraphZ object.
 
         Returns:
             An iterator over the nodes.
@@ -251,8 +235,7 @@ class GraphZ:
         return iter(self.nodes())
 
     def draw(self, block: bool = True) -> None:
-        """
-        Draws the GraphZ object using NetworkX.
+        """Draws the GraphZ object using NetworkX.
 
         Args:
             block: If True, blocks the drawing window. If False, does not block.
@@ -262,7 +245,7 @@ class GraphZ:
         plt.show(block=block)
 
 
-def try_str(key: Any):
+def _try_str(key: Any):
     if key is None:
         raise ValueError("Item cannot be None.")
     try:
