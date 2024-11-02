@@ -146,20 +146,21 @@ class GraphZ:
             data = pickle.loads(reply.ok.payload.to_bytes())
             print("data", data)
 
-            if reply.ok is None:
-                raise ZNetworkXError(f"Error getting adjacency list: {reply.result}")
+            if reply.err:
+                raise ZNetworkXError(f"Error: {reply.err}")
 
-            # the last part is the node name
-            u = str(reply.ok.key_expr).split("/")[-1]
-            v = str(reply.ok.key_expr).split("/")[-3]
+            if reply.ok:
+                # the last part is the node name
+                u = str(reply.ok.key_expr).split("/")[-1]
+                v = str(reply.ok.key_expr).split("/")[-3]
 
-            # add the edge to the adjacency list
-            if u not in adj:
-                adj[u] = {}
-            adj[u][v] = {}
-            if v not in adj:
-                adj[v] = {}
-            adj[v][u] = {}
+                # add the edge to the adjacency list
+                if u not in adj:
+                    adj[u] = {}
+                adj[u][v] = {}
+                if v not in adj:
+                    adj[v] = {}
+                adj[v][u] = {}
 
         return adj
 
