@@ -1,3 +1,5 @@
+"""A simple example that creates a graph, adds nodes to it, and then clears it."""
+
 import time
 
 from humid import hfid
