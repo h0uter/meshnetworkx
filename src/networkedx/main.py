@@ -143,11 +143,9 @@ class GraphZ:
         for reply in replies:
             reply: zenoh.Reply
 
-            data = pickle.loads(reply.ok.payload.to_bytes())
-            print("data", data)
 
             if reply.err:
-                raise ZNetworkXError(f"Error: {reply.err}")
+                raise ZNetworkXError(f"Error: {reply.err.payload.to_string()}")
 
             if reply.ok:
                 # the last part is the node name
