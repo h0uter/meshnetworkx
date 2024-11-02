@@ -18,12 +18,29 @@ dependencies = [
 nx = "networkedx.main:main"
 
 [project.optional-dependencies]
-test = [
-    "pytest>=8.3.3",
-]
+test = ["pytest>=8.3.3"]
 
 [tool.uv]
 package = true
 
 [tool.ruff]
-select = ["ALL"]
+# extend-exclude = ["examples"]
+
+select = [
+    "I",   # isort
+    "E",   # pycodestyle
+    "W",   # pycodestyle
+    "B",   # bugbear
+    "F",   # pyflakes
+    "UP",  # pyupgrade
+    "RUF", # ruff
+    "PL",  # pylint
+    "D",   # pydocstyle
+]
+fixable = [
+    "I", # isort
+]
+
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"

@@ -6,6 +6,7 @@ import networkedx as znx
 
 
 def main():
+    """Simple example that creates a graph and adds nodes to it, then clears it."""
     print("running nx example!!!")
     print()
 
