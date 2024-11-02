@@ -151,7 +151,7 @@ class GraphZ:
         time.sleep(WAIT_TIME)
 
     @property
-    def adj(self):
+    def adj(self) -> dict[Any, dict[Any, dict[Any, Any]]]:
         """Returns the adjacency list of the GraphZ object.
 
         Returns:
