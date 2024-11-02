@@ -48,4 +48,7 @@ import networkedx as znx
 G = znx.Graph()
 print(G.nodes(data=True))
 >>> [(1, {'data': 'data'}), (2, {})]
+
+print(G.edges(data=True))
+>>> [(1, 2, {'data': 'data'})]
 ```
