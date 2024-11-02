@@ -4,6 +4,7 @@ repo_name: networkedx # name to display on backlink to repo
 
 nav:
   - Home: index.md
+  - Tests: tests.md
 
 plugins:
   - search # search box
