@@ -24,15 +24,26 @@ def _totopic(key: str):
 
 
 class NodeView:
+    """Provides a read only view for accessing node data in a dictionary-like manner."""
+
     def __init__(self, node_data: dict[Any, Any]):
+        """Initializes the NodeView object with node data.
+
+        Args:
+            node_data: A dictionary containing node data.
+        """
         self._node_data = node_data  # Dictionary to store node data
 
     def __getitem__(self, key: Any):
-        # Allow dictionary-like access
+        """Allow dictionary-like access."""
         return self._node_data[key]
 
+    def __setitem__(self, key: Any, value: Any):
+        """Prevent assignment to the NodeView."""
+        raise TypeError("NodeView object does not support item assignment")
+
     def __call__(self, data: bool = False):
-        # Method-like access with optional arguments
+        """Method-like access with optional arguments."""
         if data:
             return self._node_data.items()  # Return nodes with data
         return self._node_data.keys()  # Return just node identifiers

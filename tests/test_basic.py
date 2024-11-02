@@ -298,3 +298,16 @@ def test_removing_node_removes_edge(graphz):
     G.remove_node(0)
     time.sleep(1)
     assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
+
+
+def test_node_view_assignment_raises_error(graphz):
+    """Test that assigning to the node view raises an error."""
+    G = graphz
+    G.add_node(1, color="red")
+    # passes
+    with pytest.raises(TypeError):
+        G.nodes[1] = "foo"
+
+    # fails
+    with pytest.raises(TypeError):
+        G.nodes["1"]["color"] = "green"
