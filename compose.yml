@@ -8,10 +8,29 @@ services:
       - 8000:8000
     volumes:
       - ./.zenoh_docker:/root/.zenoh
-    environment:
-      - RUST_LOG=debug
     command: -c /root/.zenoh/zenoh-myhome.json5
-  
-  # user_1:
-   
-  # user_2:
+
+  zenoh-host:
+    # usefull to run in host mode when running networkedx outside docker.
+    profiles:
+        - donotstart
+    init: true
+    image: eclipse/zenoh
+    restart: unless-stopped
+    ports:
+      - 7447:7447
+      - 8000:8000
+    volumes:
+      - ./.zenoh_docker:/root/.zenoh
+    command: -c /root/.zenoh/zenoh-myhome.json5
+    network_mode: host
+
+  networkedx:  # the experimental script.
+    init: true
+    build: .
+    # command: ["uv", "run", "src/networkedx/main.py"]
+    command: ["nx"]
+    depends_on:
+        - zenoh
+    # volumes:
+    #     - .:/workdir

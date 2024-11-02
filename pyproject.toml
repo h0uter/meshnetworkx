@@ -1,18 +1,39 @@
 [project]
 name = "networkedx"
 version = "0.1.0"
-description = "Add your description here"
+description = "Sync and use a networkX graph between multiple hosts through the power of Zenoh storages."
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = [
-    # "eclipse-zenoh>=1.0.0rc1",
-    "eclipse-zenoh>=0.11.0",
-    "humid>=0.3.1",
-    "matplotlib>=3.9.2",
-    "networkx>=3.4.1",
-    "scipy>=1.14.1",
-    # put your dependencies here
-]
+dependencies = ["eclipse-zenoh>=1.0.0", "matplotlib>=3.9.2", "networkx>=3.4.1"]
 
 [project.scripts]
 nx = "networkedx.main:main"
+
+[project.optional-dependencies]
+test = ["pytest>=8.3.3"]
+examples = ["humid>=0.3.1"]
+
+[tool.uv]
+package = true
+
+[tool.ruff]
+# extend-exclude = ["examples"]
+
+select = [
+    "I",   # isort
+    "E",   # pycodestyle
+    "W",   # pycodestyle
+    "B",   # bugbear
+    "F",   # pyflakes
+    "UP",  # pyupgrade
+    "RUF", # ruff
+    "PL",  # pylint
+    "D",   # pydocstyle
+]
+fixable = [
+    "I", # isort
+]
+
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
