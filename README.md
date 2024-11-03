@@ -60,8 +60,8 @@ On device one:
 import meshnetworkx as mnx
 
 G = znx.Graph()
-G.add_node(1, data="data")
-G.add_edge(1, 2, data="data")
+G.add_node(1, color="red")
+G.add_edge(1, 2, color="pink")
 
 ```
 
@@ -72,8 +72,8 @@ import meshnetworkx as mnx
 
 G = znx.Graph()
 print(G.nodes(data=True))
->>> [(1, {'data': 'data'}), (2, {})]
+>>> [(1, {'color': 'red'}), (2, {})]
 
 print(G.edges(data=True))
->>> [(1, 2, {'data': 'data'})]
+>>> [(1, 2, {'color': 'pink'})]
 ```
