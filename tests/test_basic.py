@@ -328,3 +328,11 @@ def test_has_node(mnx_graph):
     G.add_node(1)
     assert G.has_node(1)
     assert not G.has_node(2)
+
+
+def test_has_node_str(mnx_graph):
+    """Test checking if a node exists in the graph with a string."""
+    G = mnx_graph
+    G.add_node("1")
+    assert G.has_node("1")
+    assert not G.has_node("2")
