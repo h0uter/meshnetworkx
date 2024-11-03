@@ -304,9 +304,16 @@ def test_node_view_assignment_raises_error(graphz):
     """Test that assigning to the node view raises an error."""
     G = graphz
     G.add_node(1, color="red")
-    # passes
+
     with pytest.raises(TypeError):
         G.nodes[1] = "foo"
+
+
+@pytest.mark.skip("TODO: node data is still unprotected since it is a regular dict.")
+def test_node_view_data_assignment_raises_error(graphz):
+    """Test that assigning to the node view raises an error."""
+    G = graphz
+    G.add_node(1, color="red")
 
     # fails
     with pytest.raises(TypeError):
