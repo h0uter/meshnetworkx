@@ -52,7 +52,6 @@ def test_subprocess_multiple_nodes(mnx_graph):
 def _start_and_remove_node():
     g = mnx.Graph()
 
-    g.add_node("a", color="red")
     g.remove_node("a")
 
     g.close()
@@ -60,6 +59,8 @@ def _start_and_remove_node():
 
 def test_subprocess_remove_node(mnx_graph):
     """Test removing a node in a subprocess."""
+    mnx_graph.add_node("a", color="red")
+
     p = mp.Process(target=_start_and_remove_node)
     p.start()
     p.join()
