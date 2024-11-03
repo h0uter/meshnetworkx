@@ -11,7 +11,7 @@ services:
     command: -c /root/.zenoh/zenoh-myhome.json5
 
   zenoh-host:
-    # usefull to run in host mode when running networkedx outside docker.
+    # usefull to run in host mode when running meshnetworkx outside docker.
     profiles:
         - donotstart
     init: true
@@ -25,11 +25,11 @@ services:
     command: -c /root/.zenoh/zenoh-myhome.json5
     network_mode: host
 
-  networkedx:  # the experimental script.
+  meshnetworkx:  # the experimental script.
     init: true
     build: .
     command: ["uv", "run", "examples/main.py"]
-    # command: ["uv", "run", "src/networkedx/main.py"]
+    # command: ["uv", "run", "src/meshnetworkx/main.py"]
     # command: ["nx"]
     depends_on:
         - zenoh

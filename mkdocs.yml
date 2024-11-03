@@ -1,6 +1,6 @@
-site_name: networkedx Docs
-repo_url: https://github.com/h0uter/networkedx # backlink to repo
-repo_name: networkedx # name to display on backlink to repo
+site_name: meshnetworkx Docs
+repo_url: https://github.com/h0uter/meshnetworkx # backlink to repo
+repo_name: meshnetworkx # name to display on backlink to repo
 
 nav:
   - Home: index.md
@@ -29,6 +29,6 @@ theme:
 extra:
   social: # add contact buttons at the bottom of the page
     - icon: material/email
-      link: mailto:houterm+networkedx@gmail.com
+      link: mailto:houterm+meshnetworkx@gmail.com
 
 copyright: Copyright &copy; <a href="https://h0uter.github.io/" target="_blank">Wouter Meijer</a>

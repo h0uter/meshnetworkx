@@ -5,14 +5,14 @@ import time
 import networkx as nx
 import pytest
 
-import networkedx as znx
+import meshnetworkx as mnx
 
 
 @pytest.fixture
 def graphz():
     """Fixture to create and teardown GraphZ instance."""
     # Fixture to create and teardown GraphZ instance
-    g = znx.GraphZ()
+    g = mnx.GraphZ()
     yield g
     g.clear()
     g.close()
@@ -131,7 +131,7 @@ def test_remove_node_hardcore(graphz):
     G.add_node(0)
     G.remove_node(0)
     assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
-    with pytest.raises(znx.ZNetworkXError):
+    with pytest.raises(mnx.ZNetworkXError):
         G.remove_node(-1)
 
 
@@ -182,7 +182,7 @@ def test_nx_to_zgraph_to_nx_nodes_only():
     """Test converting a NetworkX graph to a GraphZ instance and back to NetworkX."""
     G = nx.Graph()
     G.add_nodes_from(list("ABCDEFGHIJKL"))
-    Z = znx.GraphZ.from_networkx(G)
+    Z = mnx.GraphZ.from_networkx(G)
 
     G2 = Z.to_networkx()
 

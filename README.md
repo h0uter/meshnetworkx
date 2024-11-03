@@ -18,13 +18,13 @@
     <!-- <a href="https://h0uter.github.io/humid"><strong>Explore the docs »</strong></a> -->
     <br />
     <br />
-    <a href="https://github.com/h0uter/networkedx/issues/new?labels=bug&title=New+bug+report">Report Bug</a>
+    <a href="https://github.com/h0uter/meshnetworkx/issues/new?labels=bug&title=New+bug+report">Report Bug</a>
     ·
-    <a href="https://github.com/h0uter/networkedx/issues/new?labels=enhancement&title=New+feature+request">Request Feature</a>
+    <a href="https://github.com/h0uter/meshnetworkx/issues/new?labels=enhancement&title=New+feature+request">Request Feature</a>
   </p>
 </div>
 
-<!-- # networkedx -->
+<!-- # meshnetworkx -->
 
 ## Quickstart
 
@@ -58,7 +58,7 @@ Assuming:
 On device one:
 
 ```python
-import networkedx as znx
+import meshnetworkx as mnx
 
 G = znx.Graph()
 G.add_node(1, data="data")
@@ -69,7 +69,7 @@ G.add_edge(1, 2, data="data")
 After that on device two:
 
 ```python
-import networkedx as znx
+import meshnetworkx as mnx
 
 G = znx.Graph()
 print(G.nodes(data=True))

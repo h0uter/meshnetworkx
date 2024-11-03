@@ -1,5 +1,5 @@
 [project]
-name = "networkedx"
+name = "meshnetworkx"
 version = "0.1.0"
 description = "Sync and use a networkX graph between multiple hosts through the power of Zenoh storages."
 readme = "README.md"
@@ -7,7 +7,7 @@ requires-python = ">=3.10"
 dependencies = ["eclipse-zenoh>=1.0.0", "matplotlib>=3.9.2", "networkx>=3.4.1"]
 
 [project.scripts]
-nx = "networkedx.main:main"
+nx = "meshnetworkx.main:main"
 
 [project.optional-dependencies]
 test = ["pytest>=8.3.3"]

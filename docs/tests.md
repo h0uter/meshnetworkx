@@ -1,6 +1,6 @@
 # Tests
 
-Here you can read about the tests of `networkedx`.
+Here you can read about the tests of `meshnetworkx`.
 
 ::: tests.test_basic
 

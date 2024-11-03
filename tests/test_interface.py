@@ -1,7 +1,6 @@
 import networkx as nx
 import pytest
-
-from networkedx import GraphZ
+from meshnetworkx import GraphZ
 
 # Define a whitelist of interface elements differences that can be ignored
 WHITELIST = {
@@ -119,5 +118,6 @@ def test_graph_attributes():
             and attr not in WHITELIST["attributes"]
         ):
             assert hasattr(graphz_graph, attr), f"Graphz is missing attribute: {attr}"
+
 
 # TODO: add test that checks method arguments and return types are identical as well.

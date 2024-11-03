@@ -1,5 +1,5 @@
 # Home
 
-Here you can read about the api of `networkedx`.
+Here you can read about the api of `meshnetworkx`.
 
-::: src.networkedx
+::: src.meshnetworkx
