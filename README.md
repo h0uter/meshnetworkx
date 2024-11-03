@@ -60,9 +60,9 @@ Assuming:
 On device one:
 
 ```python
-import meshnetworkx as mnx
+import meshnetworkx as mx
 
-G = znx.Graph()
+G = mx.Graph()
 G.add_node(1, color="red")
 G.add_edge(1, 2, color="pink")
 
@@ -71,9 +71,9 @@ G.add_edge(1, 2, color="pink")
 After that on device two:
 
 ```python
-import meshnetworkx as mnx
+import meshnetworkx as mx
 
-G = znx.Graph()
+G = mx.Graph()
 print(G.nodes(data=True))
 >>> [(1, {'color': 'red'}), (2, {})]
 
