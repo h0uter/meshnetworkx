@@ -18,7 +18,7 @@ def mnx_graph():
     g.close()
 
 
-def test_add_node(mnx_graph):
+def test_add_node_simple(mnx_graph):
     """Test adding a node to the graph."""
     # Test adding a node to the graph
     mnx_graph.add_node("node1", color="blue")
@@ -26,32 +26,7 @@ def test_add_node(mnx_graph):
     assert "node1" in nodes
 
 
-@pytest.mark.skip("Real nx interface does not have G.nodes()[1]")
-def test_add_node_hardcore(mnx_graph):
-    """Test adding nodes with various attributes and updating them."""
-    G = mnx_graph
-    G.add_node(0)
-
-    # TODO: enable adj
-    # assert G.adj == {0: {}}
-
-    # test add attributes
-    G.add_node(1, c="red")
-    G.add_node(2, c="blue")
-    G.add_node(3, c="red")
-    assert G.nodes(data=True)["1"]["c"] == "red"
-    assert G.nodes(data=True)["2"]["c"] == "blue"
-    assert G.nodes(data=True)["3"]["c"] == "red"
-    # test updating attributes
-    G.add_node(1, c="blue")
-    G.add_node(2, c="red")
-    G.add_node(3, c="blue")
-    assert G.nodes(data=True)["1"]["c"] == "blue"
-    assert G.nodes(data=True)["2"]["c"] == "red"
-    assert G.nodes(data=True)["3"]["c"] == "blue"
-
-
-def test_add_node_hardcore_correct(mnx_graph):
+def test_node_attribute_management(mnx_graph):
     """Test adding nodes with various attributes and updating them correctly."""
     G = mnx_graph
     G.add_node(0)
@@ -198,6 +173,36 @@ def test_nx_to_zgraph_to_nx_nodes_only():
     assert sorted(G.nodes()) == sorted(G2.nodes())
 
 
+@pytest.mark.xfail(reason="Edges are not yet converted.")
+def test_nx_to_zgraph_to_nx():
+    """Test converting a NetworkX graph to a GraphZ instance and back to NetworkX."""
+    G = nx.Graph()
+    G.add_edge("1", "2", color="purple")
+
+    Z = mnx.Graph.from_networkx(G)
+    G2 = Z.to_networkx()
+
+    assert sorted(G.nodes()) == sorted(G2.nodes())
+    assert sorted(G.edges()) == sorted(G2.edges())
+    Z.close()
+
+
+@pytest.mark.skip(
+    "Because we convert the node data to a string, cannot compare the data."
+)
+def test_nx_to_zgraph_to_nx_int():
+    """Test converting a NetworkX graph to a GraphZ instance and back to NetworkX."""
+    G = nx.Graph()
+    G.add_edge("1", "2", color="purple")
+
+    Z = mnx.Graph.from_networkx(G)
+    G2 = Z.to_networkx()
+
+    assert sorted(G.nodes()) == sorted(G2.nodes())
+    assert sorted(G.edges()) == sorted(G2.edges())
+    Z.close()
+
+
 @pytest.mark.skip("Not implemented")
 def test_duplicate_node_warning(mnx_graph):
     """How do we handle adding a node with a key that already exists?"""
@@ -285,7 +290,6 @@ def test_remove_edges_from(self):
     G.remove_edges_from([(0, 0)])  # silent fail
 
 
-# @pytest.mark.skip("TODO")
 def test_clear_orig(mnx_graph):
     """Test clearing the graph and its attributes."""
     G = mnx_graph
@@ -299,7 +303,6 @@ def test_clear_orig(mnx_graph):
     # assert G.graph == {}
 
 
-# @pytest.mark.skip("TODO")
 def test_removing_node_removes_edge(mnx_graph):
     """Test removing a node also removes its edges."""
     G = mnx_graph
