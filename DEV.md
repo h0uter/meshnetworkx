@@ -7,6 +7,7 @@
 
 - check this for basic graph interface: <https://github.com/networkx/networkx/blob/main/networkx/classes/graph.py>
 - [x] how to get the G.nodes[1] and G.nodes(data=True) to work at the same time?
+- [ ] rename the package to `znetworkx`
 
 ## use allignment
 
@@ -27,7 +28,7 @@
 ## name ideas
 
 - nx-zenoh
-- znetworkx
+- **znetworkx** <- this is the best one
 - zenoh-nx
 - zenoh-networkx
 - zgraph
