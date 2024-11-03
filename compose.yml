@@ -28,8 +28,9 @@ services:
   networkedx:  # the experimental script.
     init: true
     build: .
+    command: ["uv", "run", "examples/main.py"]
     # command: ["uv", "run", "src/networkedx/main.py"]
-    command: ["nx"]
+    # command: ["nx"]
     depends_on:
         - zenoh
     # volumes:

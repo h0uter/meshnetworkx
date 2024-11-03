@@ -7,4 +7,4 @@ WORKDIR /workdir
 
 COPY . .
 
-RUN uv pip install --system .
+RUN uv pip install --system ".[examples]"
