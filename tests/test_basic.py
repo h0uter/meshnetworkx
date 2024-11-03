@@ -137,14 +137,21 @@ def test_remove_node_hardcore(mnx_graph):
         G.remove_node(-1)
 
 
-def test_clear(mnx_graph):
+@pytest.mark.parametrize("times", [1, 10, 100])
+def test_clear(mnx_graph, times: int):
     """Test clearing all nodes from the graph."""
     # Test clearing all nodes
-    mnx_graph.add_node("node4")
-    mnx_graph.add_node("node5")
-    mnx_graph.clear()
-    nodes = mnx_graph.nodes()
-    assert len(nodes) == 0
+    NR_NODES = 4
+
+    for _ in range(times):
+        mnx_graph.add_node("node1")
+        mnx_graph.add_node("node2")
+        mnx_graph.add_edge("node1", "node2")
+        mnx_graph.add_edge("node3", "node4")
+        assert len(mnx_graph.nodes()) == NR_NODES
+
+        mnx_graph.clear()
+        assert len(mnx_graph.nodes()) == 0
 
 
 def test_to_networkx(mnx_graph):
