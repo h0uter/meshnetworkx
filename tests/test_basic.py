@@ -364,7 +364,10 @@ def test_has_node_str(mnx_graph):
         (b"True", None),
         (b"False", None),
         (bytearray(b"1"), None),
-        ("/**/", mnx.MeshNetworkXError),
+        ("/", mnx.MeshNetworkXError),
+        ("?", mnx.MeshNetworkXError),
+        ("*", mnx.MeshNetworkXError),
+        ("**", mnx.MeshNetworkXError),
     ],
 )
 def test_types_for_nodes(mnx_graph, input_data, error):
