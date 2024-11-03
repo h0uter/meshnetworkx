@@ -20,6 +20,7 @@ package = true
 [tool.ruff]
 # extend-exclude = ["examples"]
 
+[tool.ruff.lint]
 select = [
     "I",   # isort
     "E",   # pycodestyle
