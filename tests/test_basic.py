@@ -231,6 +231,9 @@ def test_remove_edge(mnx_graph):
     assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
     G.remove_edge(1, 2)
     assert G.adj == {}
+    # TODO: (match nx) raise error when edge does not exist
+    # with pytest.raises(mnx.MeshNetworkXError):
+    #     G.remove_edge(-1, 0)
 
 
 def test_remove_edge_2(mnx_graph):
@@ -272,13 +275,6 @@ def test_add_edges_from(self):
         G.add_edges_from([(None, 3), (3, 2)])  # None cannot be a node
 
 
-# @pytest.mark.skip("TODO")
-# def test_remove_edge(self):
-#     G = self.K3.copy()
-#     G.remove_edge(0, 1)
-#     assert G.adj == {0: {2: {}}, 1: {2: {}}, 2: {0: {}, 1: {}}}
-#     with pytest.raises(nx.NetworkXError):
-#         G.remove_edge(-1, 0)
 
 
 @pytest.mark.skip("TODO")
