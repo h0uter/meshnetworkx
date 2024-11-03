@@ -9,7 +9,7 @@ import meshnetworkx as mnx
 
 
 @pytest.fixture
-def graphz():
+def mnx_graph():
     """Fixture to create and teardown GraphZ instance."""
     # Fixture to create and teardown GraphZ instance
     g = mnx.Graph()
@@ -18,18 +18,18 @@ def graphz():
     g.close()
 
 
-def test_add_node(graphz):
+def test_add_node(mnx_graph):
     """Test adding a node to the graph."""
     # Test adding a node to the graph
-    graphz.add_node("node1", color="blue")
-    nodes = graphz.nodes()
+    mnx_graph.add_node("node1", color="blue")
+    nodes = mnx_graph.nodes()
     assert "node1" in nodes
 
 
 @pytest.mark.skip("Real nx interface does not have G.nodes()[1]")
-def test_add_node_hardcore(graphz):
+def test_add_node_hardcore(mnx_graph):
     """Test adding nodes with various attributes and updating them."""
-    G = graphz
+    G = mnx_graph
     G.add_node(0)
 
     # TODO: enable adj
@@ -51,13 +51,13 @@ def test_add_node_hardcore(graphz):
     assert G.nodes(data=True)["3"]["c"] == "blue"
 
 
-def test_add_node_hardcore_correct(graphz):
+def test_add_node_hardcore_correct(mnx_graph):
     """Test adding nodes with various attributes and updating them correctly."""
-    G = graphz
+    G = mnx_graph
     G.add_node(0)
 
     # TODO: enable adj
-    # assert G.adj == {0: {}}
+    assert G.adj == {0: {}}
 
     # test add attributes
     G.add_node(1, c="red")
@@ -75,9 +75,9 @@ def test_add_node_hardcore_correct(graphz):
     assert G.nodes["3"]["c"] == "blue"
 
 
-def test_add_nodes_from(graphz):
+def test_add_nodes_from(mnx_graph):
     """Test adding nodes from a list and removing some of them."""
-    G = graphz
+    G = mnx_graph
     G.add_nodes_from(list("ABCDEFGHIJKL"))
     assert G.has_node("L")
     G.remove_nodes_from(["H", "I", "J", "K", "L"])
@@ -99,33 +99,33 @@ def test_add_nodes_from(graphz):
     assert sorted(G, key=str) == ["1", "2", "3", "4", "A", "B", "C", "D", "E", "F", "G"]
 
 
-def test_add_node_with_attributes(graphz):
+def test_add_node_with_attributes(mnx_graph):
     """Test adding a node with attributes."""
     # Test adding a node with attributes
     WEIGHT = 5
-    graphz.add_node("node2", color="green", weight=WEIGHT)
-    nodes = graphz.nodes(data=True)
+    mnx_graph.add_node("node2", color="green", weight=WEIGHT)
+    nodes = mnx_graph.nodes(data=True)
     assert any(
         node == "node2" and data["color"] == "green" and data["weight"] == WEIGHT
         for node, data in nodes
     )
 
 
-def test_remove_node(graphz):
+def test_remove_node(mnx_graph):
     """Test removing a node from the graph."""
     # Test removing a node
-    graphz.add_node("node3")
-    nodes = graphz.nodes()
+    mnx_graph.add_node("node3")
+    nodes = mnx_graph.nodes()
     assert "node3" in nodes
 
-    graphz.remove_node("node3")
-    nodes = graphz.nodes()
+    mnx_graph.remove_node("node3")
+    nodes = mnx_graph.nodes()
     assert "node3" not in nodes
 
 
-def test_remove_node_hardcore(graphz):
+def test_remove_node_hardcore(mnx_graph):
     """Test removing a node with edges from the graph."""
-    G = graphz
+    G = mnx_graph
     G.add_edge(1, 2)
     assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
     G.add_node(0)
@@ -135,22 +135,22 @@ def test_remove_node_hardcore(graphz):
         G.remove_node(-1)
 
 
-def test_clear(graphz):
+def test_clear(mnx_graph):
     """Test clearing all nodes from the graph."""
     # Test clearing all nodes
-    graphz.add_node("node4")
-    graphz.add_node("node5")
-    graphz.clear()
-    nodes = graphz.nodes()
+    mnx_graph.add_node("node4")
+    mnx_graph.add_node("node5")
+    mnx_graph.clear()
+    nodes = mnx_graph.nodes()
     assert len(nodes) == 0
 
 
-def test_to_networkx(graphz):
+def test_to_networkx(mnx_graph):
     """Test converting GraphZ instance to NetworkX graph."""
     # Test converting to NetworkX graph
-    graphz.add_node("node6", color="yellow")
-    graphz.add_node("node7", color="red")
-    g = graphz.to_networkx()
+    mnx_graph.add_node("node6", color="yellow")
+    mnx_graph.add_node("node7", color="red")
+    g = mnx_graph.to_networkx()
     assert isinstance(g, nx.Graph)
     assert "node6" in g.nodes
     assert g.nodes["node6"]["color"] == "yellow"
@@ -158,22 +158,22 @@ def test_to_networkx(graphz):
     assert g.nodes["node7"]["color"] == "red"
 
 
-def test_nodes_without_data(graphz):
+def test_nodes_without_data(mnx_graph):
     """Test getting nodes without attributes."""
     # Test getting nodes without attributes
-    graphz.add_node("node8")
-    graphz.add_node("node9")
-    nodes = graphz.nodes()
+    mnx_graph.add_node("node8")
+    mnx_graph.add_node("node9")
+    nodes = mnx_graph.nodes()
     assert "node8" in nodes
     assert "node9" in nodes
 
 
-def test_nodes_with_data(graphz):
+def test_nodes_with_data(mnx_graph):
     """Test getting nodes with attributes."""
     # Test getting nodes with attributes
-    graphz.add_node("node10", color="orange")
-    graphz.add_node("node11", color="purple")
-    nodes = graphz.nodes(data=True)
+    mnx_graph.add_node("node10", color="orange")
+    mnx_graph.add_node("node11", color="purple")
+    nodes = mnx_graph.nodes(data=True)
     assert any(node == "node10" and data["color"] == "orange" for node, data in nodes)
     assert any(node == "node11" and data["color"] == "purple" for node, data in nodes)
 
@@ -190,38 +190,38 @@ def test_nx_to_zgraph_to_nx_nodes_only():
 
 
 @pytest.mark.skip("Not implemented")
-def test_duplicate_node_warning():
+def test_duplicate_node_warning(mnx_graph):
     """How do we handle adding a node with a key that already exists?"""
-    graphz.add_node("node10", color="orange")
-    graphz.add_node("node10", color="purple")
+    mnx_graph.add_node("node10", color="orange")
+    mnx_graph.add_node("node10", color="purple")
     raise AssertionError()
 
 
-def test_add_edge(graphz):
+def test_add_edge(mnx_graph):
     """Test adding an edge to the graph."""
-    G = graphz
+    G = mnx_graph
     G.add_edge(0, 1)
     assert G.adj == {"0": {"1": {}}, "1": {"0": {}}}
-    G = graphz
+    G = mnx_graph
     G.add_edge(*(0, 1))
     assert G.adj == {"0": {"1": {}}, "1": {"0": {}}}
-    G = graphz
+    G = mnx_graph
     with pytest.raises(ValueError):
         G.add_edge(None, "anything")
 
 
-def test_remove_edge(graphz):
+def test_remove_edge(mnx_graph):
     """Test removing an edge from the graph."""
-    G = graphz
+    G = mnx_graph
     G.add_edge(1, 2, weight=3)
     assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
     G.remove_edge(1, 2)
     assert G.adj == {}
 
 
-def test_remove_edge_2(graphz):
+def test_remove_edge_2(mnx_graph):
     """Test removing an edge from the graph with multiple edges."""
-    G = graphz
+    G = mnx_graph
     G.add_edge(1, 2, weight=3)
     assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
     G.add_edge(0, 1, weight=2)
@@ -288,9 +288,9 @@ def test_clear_orig(self):
 
 
 # @pytest.mark.skip("TODO")
-def test_removing_node_removes_edge(graphz):
+def test_removing_node_removes_edge(mnx_graph):
     """Test removing a node also removes its edges."""
-    G = graphz
+    G = mnx_graph
     G.add_edge(1, 2, weight=3)
     assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
     G.add_edge(0, 1, weight=2)
@@ -300,9 +300,9 @@ def test_removing_node_removes_edge(graphz):
     assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
 
 
-def test_node_view_assignment_raises_error(graphz):
+def test_node_view_assignment_raises_error(mnx_graph):
     """Test that assigning to the node view raises an error."""
-    G = graphz
+    G = mnx_graph
     G.add_node(1, color="red")
 
     with pytest.raises(TypeError):
@@ -310,9 +310,9 @@ def test_node_view_assignment_raises_error(graphz):
 
 
 @pytest.mark.skip("TODO: node data is still unprotected since it is a regular dict.")
-def test_node_view_data_assignment_raises_error(graphz):
+def test_node_view_data_assignment_raises_error(mnx_graph):
     """Test that assigning to the node view raises an error."""
-    G = graphz
+    G = mnx_graph
     G.add_node(1, color="red")
 
     # fails
