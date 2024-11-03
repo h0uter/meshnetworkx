@@ -12,7 +12,7 @@ import meshnetworkx as mnx
 def graphz():
     """Fixture to create and teardown GraphZ instance."""
     # Fixture to create and teardown GraphZ instance
-    g = mnx.GraphZ()
+    g = mnx.Graph()
     yield g
     g.clear()
     g.close()
@@ -131,7 +131,7 @@ def test_remove_node_hardcore(graphz):
     G.add_node(0)
     G.remove_node(0)
     assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
-    with pytest.raises(mnx.ZNetworkXError):
+    with pytest.raises(mnx.MeshNetworkXError):
         G.remove_node(-1)
 
 
@@ -182,7 +182,7 @@ def test_nx_to_zgraph_to_nx_nodes_only():
     """Test converting a NetworkX graph to a GraphZ instance and back to NetworkX."""
     G = nx.Graph()
     G.add_nodes_from(list("ABCDEFGHIJKL"))
-    Z = mnx.GraphZ.from_networkx(G)
+    Z = mnx.Graph.from_networkx(G)
 
     G2 = Z.to_networkx()
 

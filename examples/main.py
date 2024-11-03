@@ -12,7 +12,7 @@ def main():
     print("running nx example!!!")
     print()
 
-    zg = mnx.GraphZ()
+    zg = mnx.Graph()
     for _ in range(10):
         zg.add_node(hfid(), color="red")
 

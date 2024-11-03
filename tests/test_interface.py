@@ -78,7 +78,7 @@ def _log_differences(differences, element_type):
 def test_graph_interface():
     """Test that the GraphZ interface matches the NetworkX Graph interface."""
     nx_graph = nx.Graph()
-    graphz_graph = mnx.GraphZ()
+    graphz_graph = mnx.Graph()
 
     # Check if both have the same methods
     nx_methods = set(dir(nx_graph))
@@ -106,7 +106,7 @@ def test_graph_interface():
 def test_graph_methods():
     """Test that all methods in NetworkX Graph are present in GraphZ."""
     nx_graph = nx.Graph()
-    graphz_graph = mnx.GraphZ()
+    graphz_graph = mnx.Graph()
 
     for method in dir(nx_graph):
         if callable(getattr(nx_graph, method)) and method not in WHITELIST["methods"]:
@@ -116,7 +116,7 @@ def test_graph_methods():
 def test_graph_attributes():
     """Test that all attributes in NetworkX Graph are present in GraphZ."""
     nx_graph = nx.Graph()
-    graphz_graph = mnx.GraphZ()
+    graphz_graph = mnx.Graph()
 
     for attr in dir(nx_graph):
         if (

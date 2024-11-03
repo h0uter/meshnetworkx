@@ -13,8 +13,8 @@ PREFIX = "graph"
 WAIT_TIME = 0.0001
 
 
-class ZNetworkXError(Exception):
-    """General exception for ZNetworkX errors."""
+class MeshNetworkXError(Exception):
+    """General exception for MeshNetworkX errors."""
 
     pass
 
@@ -49,7 +49,7 @@ class NodeView:
         return self._node_data.keys()  # Return just node identifiers
 
 
-class GraphZ:
+class Graph:
     """Represents a NetworkX graph stored in Zenoh."""
 
     def __init__(self):
@@ -63,7 +63,7 @@ class GraphZ:
         self._z = zenoh.open(cfg)
 
     @staticmethod
-    def from_networkx(g: nx.Graph) -> "GraphZ":
+    def from_networkx(g: nx.Graph) -> "Graph":
         """Creates a GraphZ object from a NetworkX graph.
 
         Args:
@@ -74,7 +74,7 @@ class GraphZ:
         """
         nodes = list(g.nodes)
 
-        zg = GraphZ()
+        zg = Graph()
         zg.add_nodes_from(nodes)
 
         # TODO: also convert node data
@@ -105,7 +105,7 @@ class GraphZ:
         """
         _try_str(node)
         # if self.has_node(node):
-        #     raise ZNetworkXError(f"Node {node} already exists")
+        #     raise MeshNetworkXError(f"Node {node} already exists")
 
         data_dict = {}
         data_dict.update(attr)
@@ -171,7 +171,7 @@ class GraphZ:
             reply: zenoh.Reply
 
             if reply.err:
-                raise ZNetworkXError(f"Error: {reply.err.payload.to_string()}")
+                raise MeshNetworkXError(f"Error: {reply.err.payload.to_string()}")
 
             if reply.ok:
                 # the last part is the node name
@@ -215,7 +215,7 @@ class GraphZ:
         """
         # check if the node exists
         if not self.has_node(node):
-            raise ZNetworkXError(f"Node {node} does not exist")
+            raise MeshNetworkXError(f"Node {node} does not exist")
 
         self._z.delete(_totopic(node))
         self._z.delete(_totopic(f"{node}/to/*"))
@@ -252,7 +252,7 @@ class GraphZ:
         for reply in replies:
             reply: zenoh.Reply
             if not reply.ok:
-                raise ZNetworkXError(f"Error: {reply.err.payload.to_string()}")
+                raise MeshNetworkXError(f"Error: {reply.err.payload.to_string()}")
 
             # the last part is the node name
             node = str(reply.ok.key_expr).split("/")[-1]
@@ -295,4 +295,4 @@ def _try_str(key: Any):
     try:
         str(key)
     except Exception as e:
-        raise ZNetworkXError(f"Item '{key}' cannot be converted to string.") from e
+        raise MeshNetworkXError(f"Item '{key}' cannot be converted to string.") from e
