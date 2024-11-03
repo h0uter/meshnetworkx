@@ -10,7 +10,7 @@ import networkx as nx
 import zenoh
 
 PREFIX = "graph"
-WAIT_TIME = 0.001
+WAIT_TIME = 0.0001
 
 
 class MeshNetworkXError(Exception):
@@ -292,7 +292,7 @@ class Graph:
 
 def _try_str(key: Any) -> str:
     if key is None:
-        raise ValueError("Item cannot be None.")
+        raise TypeError("Item cannot be None.")
 
     try:
         key_str = str(key)
