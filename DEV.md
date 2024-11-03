@@ -11,9 +11,6 @@
 - [ ] setup performance test using online broker and vizualisation.
   - [ ] create two line graphs and see how fast they sync.  
 
-## use allignment
-
-<https://zenoh.io/blog/2022-11-29-zenoh-alignment/>
 
 ## requirements
 
