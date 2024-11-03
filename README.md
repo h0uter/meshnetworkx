@@ -8,7 +8,7 @@
 <br />
 <div align="center">
     <div align="center">
-    <img src="./docs/assets/logo.png" alt="alt text" width="250" height="whatever">
+    <img src="./docs/assets/logo_no_bg.png" alt="alt text" width="250" height="whatever">
     </div>
   <h3 align="center">MeshNetworkX</h3>
 
@@ -23,8 +23,6 @@
     <a href="https://github.com/h0uter/meshnetworkx/issues/new?labels=enhancement&title=New+feature+request">Request Feature</a>
   </p>
 </div>
-
-<!-- # meshnetworkx -->
 
 ## Quickstart
 
