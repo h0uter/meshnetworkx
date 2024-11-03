@@ -290,10 +290,18 @@ class Graph:
         plt.show(block=block)
 
 
-def _try_str(key: Any):
+def _try_str(key: Any) -> str:
     if key is None:
         raise ValueError("Item cannot be None.")
+
     try:
-        str(key)
+        key_str = str(key)
     except Exception as e:
         raise MeshNetworkXError(f"Item '{key}' cannot be converted to string.") from e
+
+    ILLEGAL_CHARS = ["/", "*", "?", ":", "|", "\\", "<", ">", '"', " "]
+
+    if any(char in key_str for char in ILLEGAL_CHARS):
+        raise MeshNetworkXError(f"Item '{key}' contains illegal characters.")
+
+    return key_str

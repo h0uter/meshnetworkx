@@ -275,8 +275,6 @@ def test_add_edges_from(self):
         G.add_edges_from([(None, 3), (3, 2)])  # None cannot be a node
 
 
-
-
 @pytest.mark.skip("TODO")
 def test_remove_edges_from(self):
     """Test removing edges from the graph."""
@@ -345,3 +343,35 @@ def test_has_node_str(mnx_graph):
     G.add_node("1")
     assert G.has_node("1")
     assert not G.has_node("2")
+
+
+@pytest.mark.parametrize(
+    "input_data, error",
+    [
+        (1, None),
+        ("1", None),
+        (1.0, None),
+        (1j, None),
+        (True, None),
+        (False, None),
+        (None, ValueError),
+        ("1.0", None),
+        ("1j", None),
+        ("True", None),
+        ("False", None),
+        ("None", None),
+        (b"1", None),
+        (b"True", None),
+        (b"False", None),
+        (bytearray(b"1"), None),
+        ("/**/", mnx.MeshNetworkXError),
+    ],
+)
+def test_types_for_nodes(mnx_graph, input_data, error):
+    """Test that we can use different types for nodes."""
+    G = mnx_graph
+    if error:
+        with pytest.raises(error):
+            G.add_node(input_data)
+    else:
+        G.add_node(input_data)
