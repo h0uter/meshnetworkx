@@ -2,7 +2,7 @@
 
 import multiprocessing as mp
 
-from test_basic import mnx_graph
+from tests.test_graph import mnx_graph
 
 import meshnetworkx as mnx
 
