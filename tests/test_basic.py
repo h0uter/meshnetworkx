@@ -58,6 +58,7 @@ def test_add_node_hardcore_correct(mnx_graph):
 
     # TODO: enable adj
     # FIXME: adj is not working as intended yet.
+    # With a single node it returns an empty dict, instead of an unconnected node.
     # assert G.adj == {0: {}}
 
     # test add attributes
