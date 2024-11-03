@@ -38,11 +38,11 @@ Then run an example with `python examples/main.py`
 ## Why?
 
 - If you model your application domain as a graph, this package makes it easy to run on multiple devices and automatically sync the graph between them.
-- It is an abstraction on top of the Zenoh protocol, which is a very efficient protocol for IoT applications.
 - It is a drop-in replacement for networkx, so you can use all the networkx methods on the graph.
 
 ## How?
 
+- It is an abstraction on top of the Zenoh protocol, which is a very efficient protocol for IoT applications.
 - The graph is stored in a zenoh storage, which is a key-value store.
 - The nodes and edges are stored as keys in the zenoh storage.
 - The graph is synced between devices using zenoh Storages. This protocol automagically orchestrates allignment between storages, even if the network becomes partitioned and then later reconnects.

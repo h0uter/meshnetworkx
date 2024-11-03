@@ -31,3 +31,7 @@
 - zenoh-nx
 - zenoh-networkx
 - zgraph
+- networkz
+- zenohx
+- zenoh-graph
+- zenoh-graphx
