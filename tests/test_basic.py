@@ -320,3 +320,11 @@ def test_node_view_data_assignment_raises_error(mnx_graph):
     # fails
     with pytest.raises(TypeError):
         G.nodes["1"]["color"] = "green"
+
+
+def test_has_node(mnx_graph):
+    """Test checking if a node exists in the graph."""
+    G = mnx_graph
+    G.add_node(1)
+    assert G.has_node(1)
+    assert not G.has_node(2)
