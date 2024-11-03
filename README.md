@@ -10,7 +10,7 @@
     <div align="center">
     <img src="./docs/assets/logo.png" alt="alt text" width="250" height="whatever">
     </div>
-  <!-- <h3 align="center">humid</h3> -->
+  <h3 align="center">MeshNetworkX</h3>
 
   <p align="center">
     Networkx Graphs synced across devices using Zenoh.
