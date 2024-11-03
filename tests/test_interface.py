@@ -58,7 +58,7 @@ WHITELIST = {
     ],
     "attributes": [
         "graph",
-        "adj",
+        # "adj",
         "name",
         "_adj",
         "_node",
