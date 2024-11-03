@@ -161,8 +161,33 @@ def test_nodes_with_data(mnx_graph):
     assert any(node == "node10" and data["color"] == "orange" for node, data in nodes)
     assert any(node == "node11" and data["color"] == "purple" for node, data in nodes)
 
+@pytest.mark.xfail(reason="Edges are not yet converted.")
+def test_mnx_to_nx():
+    """Test converting a GraphZ instance to a NetworkX graph."""
+    G = mnx.Graph()
+    G.add_nodes_from(list("ABCDEFGHIJKL"))
+    G.add_edge("A", "B", color="purple")
 
-def test_nx_to_zgraph_to_nx_nodes_only():
+    G2 = G.to_networkx()
+
+    assert sorted(G.nodes()) == sorted(G2.nodes())
+    assert sorted(G.edges()) == sorted(G2.edges())
+
+@pytest.mark.xfail(reason="Edges are not yet converted.")
+def test_nx_to_mnx():
+    """Test converting a NetworkX graph to a GraphZ instance."""
+    G = nx.Graph()
+    G.add_nodes_from(list("ABCDEFGHIJKL"))
+    G.add_edge("A", "B", color="purple")
+
+    Z = mnx.Graph.from_networkx(G)
+
+    assert sorted(G.nodes()) == sorted(Z.nodes())
+    assert sorted(G.edges()) == sorted(Z.edges())
+    Z.close()
+
+
+def test_nx_to_mnx_to_nx_nodes_only():
     """Test converting a NetworkX graph to a GraphZ instance and back to NetworkX."""
     G = nx.Graph()
     G.add_nodes_from(list("ABCDEFGHIJKL"))

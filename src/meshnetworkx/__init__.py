@@ -72,14 +72,12 @@ class Graph:
         Returns:
             A GraphZ object.
         """
-        nodes = list(g.nodes)
-
         zg = Graph()
-        zg.add_nodes_from(nodes)
+        for node, data in g.nodes(data=True):
+            zg.add_node(node, **data)
 
-        # TODO: also convert node data
-        # TODO: also convert edges
-        # TODO: also convert edge data
+        for u, v, data in g.edges(data=True):
+            zg.add_edge(u, v, **data)
 
         return zg
 
@@ -93,6 +91,10 @@ class Graph:
 
         for node, data in self.nodes(data=True):
             g.add_node(node, **data)
+
+        # TODO: add edge view
+        # for u, v, data in self.edges(data=True):
+        #     g.add_edge(u, v, **data)
 
         return g
 
