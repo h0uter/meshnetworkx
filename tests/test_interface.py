@@ -1,6 +1,9 @@
+"""Tests to ensure that the GraphZ interface matches the NetworkX Graph interface."""
+
 import networkx as nx
 import pytest
-from meshnetworkx import GraphZ
+
+import meshnetworkx as mnx
 
 # Define a whitelist of interface elements differences that can be ignored
 WHITELIST = {
@@ -65,7 +68,7 @@ WHITELIST = {
 }
 
 
-def log_differences(differences, element_type):
+def _log_differences(differences, element_type):
     if differences:
         print(f"Differences in {element_type}:")
         for diff in differences:
@@ -73,15 +76,16 @@ def log_differences(differences, element_type):
 
 
 def test_graph_interface():
+    """Test that the GraphZ interface matches the NetworkX Graph interface."""
     nx_graph = nx.Graph()
-    graphz_graph = GraphZ()
+    graphz_graph = mnx.GraphZ()
 
     # Check if both have the same methods
     nx_methods = set(dir(nx_graph))
     graphz_methods = set(dir(graphz_graph))
 
     method_differences = (nx_methods - graphz_methods) - set(WHITELIST["methods"])
-    log_differences(method_differences, "methods")
+    _log_differences(method_differences, "methods")
     assert (
         not method_differences
     ), "Graphz interface does not match NetworkX Graph interface"
@@ -93,15 +97,16 @@ def test_graph_interface():
     }
 
     attr_differences = (nx_attrs - graphz_attrs) - set(WHITELIST["attributes"])
-    log_differences(attr_differences, "attributes")
+    _log_differences(attr_differences, "attributes")
     assert (
         not attr_differences
     ), "Graphz attributes do not match NetworkX Graph attributes"
 
 
 def test_graph_methods():
+    """Test that all methods in NetworkX Graph are present in GraphZ."""
     nx_graph = nx.Graph()
-    graphz_graph = GraphZ()
+    graphz_graph = mnx.GraphZ()
 
     for method in dir(nx_graph):
         if callable(getattr(nx_graph, method)) and method not in WHITELIST["methods"]:
@@ -109,8 +114,9 @@ def test_graph_methods():
 
 
 def test_graph_attributes():
+    """Test that all attributes in NetworkX Graph are present in GraphZ."""
     nx_graph = nx.Graph()
-    graphz_graph = GraphZ()
+    graphz_graph = mnx.GraphZ()
 
     for attr in dir(nx_graph):
         if (
