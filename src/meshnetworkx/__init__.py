@@ -104,8 +104,8 @@ class GraphZ:
             attr: Additional attributes for the node.
         """
         _try_str(node)
-        if self.has_node(node):
-            raise ZNetworkXError(f"Node {node} already exists")
+        # if self.has_node(node):
+        #     raise ZNetworkXError(f"Node {node} already exists")
 
         data_dict = {}
         data_dict.update(attr)
@@ -231,7 +231,8 @@ class GraphZ:
         Returns:
             True if the node exists, False otherwise.
         """
-        return str(node) in self.nodes
+        _try_str(node)
+        return str(node) in self.nodes()
 
     # def nodes(self, data: bool = False) -> dict[Any, Any] | set[Any]:
     @property
@@ -275,7 +276,7 @@ class GraphZ:
         Returns:
             An iterator over the nodes.
         """
-        return iter(self.nodes)
+        return iter(self.nodes())
 
     def draw(self, block: bool = True) -> None:
         """Draws the GraphZ object using NetworkX.
