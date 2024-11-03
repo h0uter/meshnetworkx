@@ -77,7 +77,11 @@ class GraphZ:
         zg = GraphZ()
         zg.add_nodes_from(nodes)
 
-        return GraphZ()
+        # TODO: also convert node data
+        # TODO: also convert edges
+        # TODO: also convert edge data
+
+        return zg
 
     def to_networkx(self) -> nx.Graph:
         """Converts the GraphZ object to a NetworkX graph.
@@ -99,8 +103,9 @@ class GraphZ:
             node: The node to add.
             attr: Additional attributes for the node.
         """
-        # TODO: handle node already exists
         _try_str(node)
+        if self.has_node(node):
+            raise ZNetworkXError(f"Node {node} already exists")
 
         data_dict = {}
         data_dict.update(attr)
@@ -226,8 +231,7 @@ class GraphZ:
         Returns:
             True if the node exists, False otherwise.
         """
-        _try_str(node)
-        return str(node) in self.nodes()
+        return str(node) in self.nodes
 
     # def nodes(self, data: bool = False) -> dict[Any, Any] | set[Any]:
     @property
@@ -241,24 +245,19 @@ class GraphZ:
         Returns:
             A list of nodes or a list of tuples containing nodes and their data.
         """
-        # nodes = set()
-        # if data:
         nodes = {}
 
         replies = self._z.get(_totopic("*"), handler=zenoh.handlers.DefaultHandler())
         for reply in replies:
             reply: zenoh.Reply
-            # the last part is the node name
             if not reply.ok:
                 raise ZNetworkXError(f"Error: {reply.err.payload.to_string()}")
 
+            # the last part is the node name
             node = str(reply.ok.key_expr).split("/")[-1]
             node_data = pickle.loads(reply.ok.payload.to_bytes())
 
-            # if isinstance(nodes, dict):
             nodes[node] = node_data
-            # elif isinstance(nodes, set):
-            #     nodes.add(node)
 
         return NodeView(nodes)
 
@@ -276,7 +275,7 @@ class GraphZ:
         Returns:
             An iterator over the nodes.
         """
-        return iter(self.nodes())
+        return iter(self.nodes)
 
     def draw(self, block: bool = True) -> None:
         """Draws the GraphZ object using NetworkX.
