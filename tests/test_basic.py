@@ -278,15 +278,18 @@ def test_remove_edges_from(self):
     G.remove_edges_from([(0, 0)])  # silent fail
 
 
-@pytest.mark.skip("TODO")
-def test_clear_orig(self):
+# @pytest.mark.skip("TODO")
+def test_clear_orig(mnx_graph):
     """Test clearing the graph and its attributes."""
-    G = self.K3.copy()
-    G.graph["name"] = "K3"
+    G = mnx_graph
+    G.add_node(1)
+    G.add_edge(1, 2, color="red")
+    # G.graph["name"] = "K3"
     G.clear()
-    assert list(G.nodes) == []
+    # assert list(G.nodes) == []  # FIXME: need to update NodeView so it works like this
+    assert list(G.nodes()) == []
     assert G.adj == {}
-    assert G.graph == {}
+    # assert G.graph == {}
 
 
 # @pytest.mark.skip("TODO")

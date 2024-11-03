@@ -265,6 +265,7 @@ class Graph:
     def clear(self) -> None:
         """Clears all nodes from the GraphZ object."""
         self._z.delete(_totopic("**"))
+        time.sleep(WAIT_TIME)
 
     def close(self) -> None:
         """Closes the connection to the Zenoh router."""
