@@ -9,7 +9,7 @@
 <br />
 <div align="center">
     <div align="center">
-    <img src="./docs/assets/logo_no_bg.png" alt="alt text" width="250" height="whatever">
+    <img src="https://raw.githubusercontent.com/h0uter/meshnetworkx/a17d75a0b56d48dfdce91d9f6275ffac4a729d53/docs/assets/logo_no_bg.png" alt="alt text" width="250" height="whatever">
     </div>
   <h3 align="center">MeshNetworkX</h3>
 
