@@ -44,10 +44,9 @@ Then run an example with `python examples/main.py`
 - It is an abstraction on top of the Zenoh protocol, which is a very efficient protocol for IoT applications.
 - The graph is stored in a zenoh storage, for more information on how zenoh keeps storages alligned (even if the network becomes partitioned and then later reconnects), [check here](https://zenoh.io/blog/2022-11-29-zenoh-alignment).
 
-
-    <div align="center">
+<div align="center">
     <img src="./docs/assets/anti-entropy.gif" alt="alt text" width="450" height="whatever">
-    </div>
+</div>
 
 ## Example
 
