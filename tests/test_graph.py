@@ -241,10 +241,7 @@ def test_add_edge(mnx_graph):
     G = mnx_graph
     G.add_edge(0, 1)
     assert G.adj == {"0": {"1": {}}, "1": {"0": {}}}
-    G = mnx_graph
-    G.add_edge(*(0, 1))
-    assert G.adj == {"0": {"1": {}}, "1": {"0": {}}}
-    G = mnx_graph
+
     with pytest.raises(TypeError):
         G.add_edge(None, "anything")
 
