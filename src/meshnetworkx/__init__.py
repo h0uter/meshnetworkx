@@ -93,8 +93,8 @@ class Graph:
             g.add_node(node, **data)
 
         # TODO: add edge view
-        # for u, v, data in self.edges(data=True):
-        #     g.add_edge(u, v, **data)
+        for u, v, data in self.edges(data=True):
+            g.add_edge(u, v, **data)
 
         return g
 
@@ -116,6 +116,8 @@ class Graph:
         self._z.put(_totopic(node), data_bytes)
         # TODO: instead wait till we can read it back
         time.sleep(WAIT_TIME)
+
+    # edge stuff
 
     def add_edge(self, u: Any, v: Any, **attr) -> None:
         """Adds an edge to the GraphZ object.
@@ -156,6 +158,54 @@ class Graph:
         key = f"{u}/to/{v}" if u < v else f"{v}/to/{u}"
         self._z.delete(_totopic(key))
         time.sleep(WAIT_TIME)
+
+    def has_edge(self, u: Any, v: Any) -> bool:
+        """Checks if an edge exists in the GraphZ object.
+
+        Args:
+            u: The source node.
+            v: The target node.
+
+        Returns:
+            True if the edge exists, False otherwise.
+        """
+        u = _try_str(u)
+        v = _try_str(v)
+
+        # sort key alphabetically
+        key = (u, v) if u < v else (v, u)
+
+        return key in self.edges()
+
+    @property
+    def edges(self) -> nx.classes.reportviews.EdgeView:
+        """Returns a list of edges in the GraphZ object.
+
+        Returns:
+            A list of edges.
+        """
+        edges = []
+
+        replies = self._z.get(
+            _totopic("*/to/*"), handler=zenoh.handlers.DefaultHandler()
+        )
+        for reply in replies:
+            reply: zenoh.Reply
+            if not reply.ok:
+                raise MeshNetworkXError(f"Error: {reply.err.payload.to_string()}")
+
+            # the last part is the node name
+            u = str(reply.ok.key_expr).split("/")[-1]
+            v = str(reply.ok.key_expr).split("/")[-3]
+
+            edge_data = pickle.loads(reply.ok.payload.to_bytes())
+
+            edges.append((u, v, edge_data))
+
+        G = nx.Graph()
+        G.add_edges_from(edges)
+
+        return G.edges
 
     @property
     def adj(self) -> dict[Any, dict[Any, dict[Any, Any]]]:

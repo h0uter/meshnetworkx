@@ -164,17 +164,21 @@ def test_nodes_with_data(mnx_graph):
     assert any(node == "node11" and data["color"] == "purple" for node, data in nodes)
 
 
-@pytest.mark.xfail(reason="Edges are not yet converted.")
+@pytest.mark.xfail(reason="Sorting of edges is not implemented yet.")
 def test_mnx_to_nx():
     """Test converting a GraphZ instance to a NetworkX graph."""
     G = mnx.Graph()
     G.add_nodes_from(list("ABCDEFGHIJKL"))
-    G.add_edge("A", "B", color="purple")
+    # G.add_edge("A", "B", color="purple")
+    G.add_edge("B", "A", color="purple")
 
     G2 = G.to_networkx()
 
     assert sorted(G.nodes()) == sorted(G2.nodes())
     assert sorted(G.edges()) == sorted(G2.edges())
+    
+    G.clear()
+    G.close()
 
 
 @pytest.mark.xfail(reason="Edges are not yet converted.")
@@ -188,6 +192,8 @@ def test_nx_to_mnx():
 
     assert sorted(G.nodes()) == sorted(Z.nodes())
     assert sorted(G.edges()) == sorted(Z.edges())
+
+    Z.clear()
     Z.close()
 
 
@@ -201,8 +207,11 @@ def test_nx_to_mnx_to_nx_nodes_only():
 
     assert sorted(G.nodes()) == sorted(G2.nodes())
 
+    Z.clear()
+    Z.close()
 
-@pytest.mark.xfail(reason="Edges are not yet converted.")
+
+# @pytest.mark.xfail(reason="Edges are not yet converted.")
 def test_nx_to_zgraph_to_nx():
     """Test converting a NetworkX graph to a GraphZ instance and back to NetworkX."""
     G = nx.Graph()
@@ -213,6 +222,8 @@ def test_nx_to_zgraph_to_nx():
 
     assert sorted(G.nodes()) == sorted(G2.nodes())
     assert sorted(G.edges()) == sorted(G2.edges())
+    
+    Z.clear()
     Z.close()
 
 
@@ -229,6 +240,7 @@ def test_nx_to_zgraph_to_nx_int():
 
     assert sorted(G.nodes()) == sorted(G2.nodes())
     assert sorted(G.edges()) == sorted(G2.edges())
+    Z.clear()
     Z.close()
 
 
@@ -260,6 +272,19 @@ def test_remove_edge(mnx_graph):
     # TODO: (match nx) raise error when edge does not exist
     # with pytest.raises(mnx.MeshNetworkXError):
     #     G.remove_edge(-1, 0)
+
+
+def test_has_edge(mnx_graph):
+    """Test checking if an edge exists in the graph."""
+    G = mnx_graph
+    G.add_edge(1, 2)
+    print(G.edges())
+
+    # simple graph has bidirectional edges
+    assert G.has_edge(1, 2)
+    assert G.has_edge(2, 1)
+
+    assert not G.has_edge(3, 1)
 
 
 def test_remove_edge_2(mnx_graph):
