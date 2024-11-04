@@ -34,6 +34,7 @@
 then run the following `pip install -e ".[examples]"` to install the package.
 
 Then run an example with `python examples/main.py`
+
 <div align="right">(<a href="#readme-top">back to top</a>)</div>
 
 ## Why?
