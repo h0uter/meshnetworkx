@@ -8,18 +8,6 @@ import pytest
 import meshnetworkx as mnx
 
 
-@pytest.fixture
-def mnx_graph():
-    """Fixture to create and teardown GraphZ instance."""
-    # Fixture to create and teardown GraphZ instance
-    g = mnx.Graph()
-
-    yield g
-
-    g.clear()
-    g.close()
-
-
 def test_add_node_simple(mnx_graph):
     """Test adding a node to the graph."""
     # Test adding a node to the graph

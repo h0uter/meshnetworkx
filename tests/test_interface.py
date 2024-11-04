@@ -1,7 +1,6 @@
 """Tests to ensure that the GraphZ interface matches the NetworkX Graph interface."""
 
 import networkx as nx
-import pytest
 
 import meshnetworkx as mnx
 
