@@ -1,4 +1,4 @@
-{  
+{
 //   mode: "peer",
   mode: "router",  // need to run in router mode so we can connect from outside the container.
   scouting: {
@@ -6,7 +6,7 @@
       enabled: true,
       address: "224.0.0.224:7446",
       interface: "auto",
-      autoconnect: { router: [], peer: ["router", "peer"] }, 
+      autoconnect: { router: [], peer: ["router", "peer"] },
       listen: true,
     },
   },
