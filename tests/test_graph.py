@@ -13,7 +13,9 @@ def mnx_graph():
     """Fixture to create and teardown GraphZ instance."""
     # Fixture to create and teardown GraphZ instance
     g = mnx.Graph()
+
     yield g
+
     g.clear()
     g.close()
 
@@ -161,6 +163,7 @@ def test_nodes_with_data(mnx_graph):
     assert any(node == "node10" and data["color"] == "orange" for node, data in nodes)
     assert any(node == "node11" and data["color"] == "purple" for node, data in nodes)
 
+
 @pytest.mark.xfail(reason="Edges are not yet converted.")
 def test_mnx_to_nx():
     """Test converting a GraphZ instance to a NetworkX graph."""
@@ -172,6 +175,7 @@ def test_mnx_to_nx():
 
     assert sorted(G.nodes()) == sorted(G2.nodes())
     assert sorted(G.edges()) == sorted(G2.edges())
+
 
 @pytest.mark.xfail(reason="Edges are not yet converted.")
 def test_nx_to_mnx():
