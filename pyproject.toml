@@ -12,6 +12,7 @@ dependencies = ["eclipse-zenoh>=1.0.0", "matplotlib>=3.9.2", "networkx>=3.4.1"]
 [project.urls]
 Source = "https://github.com/h0uter/meshnetworkx"
 Issues = "https://github.com/h0uter/meshnetworkx/issues"
+Documentation = "https://h0uter.github.io/meshnetworkx/"
 
 [project.optional-dependencies]
 test = ["pytest>=8.3.3"]
