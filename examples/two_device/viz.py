@@ -3,7 +3,7 @@
 import random
 import string
 
-from nicegui import ui
+from nicegui import app, run, ui
 
 import meshnetworkx as mx
 
@@ -27,10 +27,22 @@ ui.button("add Node", on_click=_add_node)
 info = ui.label("info")
 
 
-def _read_graph():
-    info.set_text(str(M.nodes(data=True)))
+async def _read_graph():
+    def wrap():
+        return M.nodes(data=True)
+
+    nodes = await run.io_bound(wrap)
+    info.set_text(str(nodes))
 
 
-ui.timer(0.1, _read_graph)
+ui.timer(0.3, _read_graph)
+
+
+def _cleanup():
+    M.clear()
+    M.close()
+
+
+app.on_shutdown(_cleanup)
 
 ui.run()
