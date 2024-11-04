@@ -5,7 +5,7 @@ import time
 import networkx as nx
 import pytest
 
-import meshnetworkx as mnx
+import meshnetworkx as mx
 
 
 def test_add_node_simple(mnx_graph):
@@ -98,7 +98,7 @@ def test_remove_node_hardcore(mnx_graph):
     G.add_node(0)
     G.remove_node(0)
     assert G.adj == {"1": {"2": {}}, "2": {"1": {}}}
-    with pytest.raises(mnx.MeshNetworkXError):
+    with pytest.raises(mx.MeshNetworkXError):
         G.remove_node(-1)
 
 
@@ -155,7 +155,7 @@ def test_nodes_with_data(mnx_graph):
 @pytest.mark.xfail(reason="Sorting of edges is not implemented yet.")
 def test_mnx_to_nx():
     """Test converting a GraphZ instance to a NetworkX graph."""
-    G = mnx.Graph()
+    G = mx.GraphZ()
     G.add_nodes_from(list("ABCDEFGHIJKL"))
     # G.add_edge("A", "B", color="purple")
     G.add_edge("B", "A", color="purple")
@@ -176,7 +176,7 @@ def test_nx_to_mnx():
     G.add_nodes_from(list("ABCDEFGHIJKL"))
     G.add_edge("A", "B", color="purple")
 
-    Z = mnx.Graph.from_networkx(G)
+    Z = mx.GraphZ.from_networkx(G)
 
     assert sorted(G.nodes()) == sorted(Z.nodes())
     assert sorted(G.edges()) == sorted(Z.edges())
@@ -189,7 +189,7 @@ def test_nx_to_mnx_to_nx_nodes_only():
     """Test converting a NetworkX graph to a GraphZ instance and back to NetworkX."""
     G = nx.Graph()
     G.add_nodes_from(list("ABCDEFGHIJKL"))
-    Z = mnx.Graph.from_networkx(G)
+    Z = mx.GraphZ.from_networkx(G)
 
     G2 = Z.to_networkx()
 
@@ -205,7 +205,7 @@ def test_nx_to_zgraph_to_nx():
     G = nx.Graph()
     G.add_edge("1", "2", color="purple")
 
-    Z = mnx.Graph.from_networkx(G)
+    Z = mx.GraphZ.from_networkx(G)
     G2 = Z.to_networkx()
 
     assert sorted(G.nodes()) == sorted(G2.nodes())
@@ -223,7 +223,7 @@ def test_nx_to_zgraph_to_nx_int():
     G = nx.Graph()
     G.add_edge("1", "2", color="purple")
 
-    Z = mnx.Graph.from_networkx(G)
+    Z = mx.GraphZ.from_networkx(G)
     G2 = Z.to_networkx()
 
     assert sorted(G.nodes()) == sorted(G2.nodes())
@@ -258,7 +258,7 @@ def test_remove_edge(mnx_graph):
     G.remove_edge(1, 2)
     assert G.adj == {}
     # TODO: (match nx) raise error when edge does not exist
-    with pytest.raises(mnx.MeshNetworkXError):
+    with pytest.raises(mx.MeshNetworkXError):
         G.remove_edge(-1, 0)
 
 
@@ -402,10 +402,10 @@ def test_has_node_str(mnx_graph):
         (b"True", None),
         (b"False", None),
         (bytearray(b"1"), None),
-        ("/", mnx.MeshNetworkXError),
-        ("?", mnx.MeshNetworkXError),
-        ("*", mnx.MeshNetworkXError),
-        ("**", mnx.MeshNetworkXError),
+        ("/", mx.MeshNetworkXError),
+        ("?", mx.MeshNetworkXError),
+        ("*", mx.MeshNetworkXError),
+        ("**", mx.MeshNetworkXError),
     ],
 )
 def test_types_for_nodes(mnx_graph, input_data, error):

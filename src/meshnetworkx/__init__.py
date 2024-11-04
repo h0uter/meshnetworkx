@@ -54,7 +54,7 @@ class NodeView:
         return self._node_data.keys()  # Return just node identifiers
 
 
-class Graph:
+class GraphZ:
     """Represents a NetworkX graph stored in Zenoh."""
 
     def __init__(self):
@@ -68,7 +68,7 @@ class Graph:
         self._z = zenoh.open(cfg)
 
     @staticmethod
-    def from_networkx(g: nx.Graph) -> "Graph":
+    def from_networkx(g: nx.Graph) -> "GraphZ":
         """Creates a GraphZ object from a NetworkX graph.
 
         Args:
@@ -77,7 +77,7 @@ class Graph:
         Returns:
             A GraphZ object.
         """
-        zg = Graph()
+        zg = GraphZ()
         for node, data in g.nodes(data=True):
             zg.add_node(node, **data)
 

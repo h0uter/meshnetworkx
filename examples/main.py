@@ -4,7 +4,7 @@ import time
 
 from humid import hfid
 
-import meshnetworkx as mnx
+import meshnetworkx as mx
 
 
 def main():
@@ -12,7 +12,7 @@ def main():
     print("running nx example!!!")
     print()
 
-    zg = mnx.Graph()
+    zg = mx.GraphZ()
     for _ in range(10):
         zg.add_node(hfid(), color="red")
 

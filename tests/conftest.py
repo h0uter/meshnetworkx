@@ -2,13 +2,13 @@
 
 import pytest
 
-import meshnetworkx as mnx
+import meshnetworkx as mx
 
 
 @pytest.fixture
 def mnx_graph():
     """Fixture to create and teardown GraphZ instance."""
-    g = mnx.Graph()
+    g = mx.GraphZ()
 
     # This should not be necessary,
     # but just in case a previous test did not cleanup properly

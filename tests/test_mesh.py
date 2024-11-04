@@ -2,11 +2,11 @@
 
 import multiprocessing as mp
 
-import meshnetworkx as mnx
+import meshnetworkx as mx
 
 
 def _start_and_write_graph():
-    g = mnx.Graph()
+    g = mx.GraphZ()
 
     g.add_node("a", color="red")
 
@@ -24,7 +24,7 @@ def test_subprocess_communication(mnx_graph):
 
 
 def _start_and_add_multiple_nodes():
-    g = mnx.Graph()
+    g = mx.GraphZ()
 
     g.add_node("a", color="red")
     g.add_node("b", color="blue")
@@ -48,7 +48,7 @@ def test_subprocess_multiple_nodes(mnx_graph):
 
 
 def _start_and_remove_node():
-    g = mnx.Graph()
+    g = mx.GraphZ()
 
     g.remove_node("a")
 

@@ -9,7 +9,7 @@ import meshnetworkx as mx
 
 ui.label("Hi world")
 
-M = mx.Graph()
+M = mx.GraphZ()
 
 
 ui.button("clear", on_click=M.clear)
