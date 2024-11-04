@@ -7,15 +7,12 @@ requires-python = ">=3.10"
 dependencies = ["eclipse-zenoh>=1.0.0", "matplotlib>=3.9.2", "networkx>=3.4.1"]
 
 [project.scripts]
-nx = "meshnetworkx.main:main"
+
 
 [project.optional-dependencies]
 test = ["pytest>=8.3.3"]
 docs = ["mkdocs-material>=9.5.33", "mkdocstrings-python>=1.10.9"]
-examples = [
-    "humid>=0.3.1",
-    "nicegui>=2.5.0",
-]
+examples = ["humid>=0.3.1", "nicegui>=2.5.0"]
 
 [tool.uv]
 package = true
