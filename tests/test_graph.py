@@ -199,7 +199,7 @@ def test_nx_to_mnx_to_nx_nodes_only():
     Z.close()
 
 
-# @pytest.mark.xfail(reason="Edges are not yet converted.")
+@pytest.mark.xfail(reason="Sorting of edges is somehow random.")
 def test_nx_to_zgraph_to_nx():
     """Test converting a NetworkX graph to a GraphZ instance and back to NetworkX."""
     G = nx.Graph()
@@ -258,15 +258,14 @@ def test_remove_edge(mnx_graph):
     G.remove_edge(1, 2)
     assert G.adj == {}
     # TODO: (match nx) raise error when edge does not exist
-    # with pytest.raises(mnx.MeshNetworkXError):
-    #     G.remove_edge(-1, 0)
+    with pytest.raises(mnx.MeshNetworkXError):
+        G.remove_edge(-1, 0)
 
 
 def test_has_edge(mnx_graph):
     """Test checking if an edge exists in the graph."""
     G = mnx_graph
     G.add_edge(1, 2)
-    print(G.edges())
 
     # simple graph has bidirectional edges
     assert G.has_edge(1, 2)

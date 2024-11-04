@@ -155,6 +155,10 @@ class Graph:
         _try_str(u)
         _try_str(v)
 
+        # check if the edge exists
+        if not self.has_edge(u, v) or not self.has_edge(v, u):
+            raise MeshNetworkXError(f"Edge {u} to {v} does not exist")
+
         key = f"{u}/to/{v}" if u < v else f"{v}/to/{u}"
         self._z.delete(_totopic(key))
         time.sleep(WAIT_TIME)
