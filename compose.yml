@@ -2,7 +2,6 @@ services:
   zenoh:
     init: true
     image: eclipse/zenoh
-    restart: unless-stopped
     ports:
       - 7447:7447
       - 8000:8000
@@ -16,7 +15,6 @@ services:
         - donotstart
     init: true
     image: eclipse/zenoh
-    restart: unless-stopped
     ports:
       - 7447:7447
       - 8000:8000
@@ -29,9 +27,5 @@ services:
     init: true
     build: .
     command: ["uv", "run", "examples/main.py"]
-    # command: ["uv", "run", "src/meshnetworkx/main.py"]
-    # command: ["nx"]
     depends_on:
         - zenoh
-    # volumes:
-    #     - .:/workdir
