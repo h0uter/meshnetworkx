@@ -7,8 +7,8 @@ services:
       - 7447:7447
       - 8000:8000
     volumes:
-      - ./.zenoh_docker:/root/.zenoh
-    command: -c /root/.zenoh/zenoh-myhome.json5
+      - ./.zenoh:/root/.zenoh
+    command: -c /root/.zenoh/meshnetworkx.json5
 
   zenoh-host:
     # usefull to run in host mode when running meshnetworkx outside docker.
@@ -21,8 +21,8 @@ services:
       - 7447:7447
       - 8000:8000
     volumes:
-      - ./.zenoh_docker:/root/.zenoh
-    command: -c /root/.zenoh/zenoh-myhome.json5
+      - ./.zenoh:/root/.zenoh
+    command: -c /root/.zenoh/meshnetworkx.json5
     network_mode: host
 
   meshnetworkx:  # the experimental script.
