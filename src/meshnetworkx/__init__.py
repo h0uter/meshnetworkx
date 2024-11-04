@@ -1,4 +1,9 @@
-"""Provides the GraphZ class for storing a NetworkX graph in Zenoh."""
+"""Provides the GraphZ class for storing a NetworkX graph in Zenoh.
+
+Usage:
+    `import meshnetworkx as mx`
+
+"""
 
 import json
 import pickle
