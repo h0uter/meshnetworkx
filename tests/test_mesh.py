@@ -4,6 +4,8 @@ import multiprocessing as mp
 
 import meshnetworkx as mx
 
+mp.set_start_method("spawn", force=True)
+
 
 def _start_and_write_graph():
     g = mx.GraphZ()
