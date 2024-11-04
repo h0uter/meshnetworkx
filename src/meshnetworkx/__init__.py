@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import zenoh
 
-PREFIX = "graph"
+PREFIX = "graph"  # has to match config in .zenoh/meshnetworkx.json5
 WAIT_TIME = 0.0001
 
 
