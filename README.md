@@ -48,7 +48,7 @@ Then run an example with `python examples/main.py`
 - The graph is stored in a zenoh storage, for more information on how zenoh keeps storages alligned (even if the network becomes partitioned and then later reconnects), [check here](https://zenoh.io/blog/2022-11-29-zenoh-alignment).
 
 <div align="center">
-    <img src="./docs/assets/anti-entropy.gif" alt="alt text" width="450" height="whatever">
+    <img src="https://github.com/h0uter/meshnetworkx/blob/dcb76e89f8f74754b37af020dd457ac7a408c774/docs/assets/anti-entropy.gif?raw=true" alt="alt text" width="450" height="whatever">
 </div>
 
 <div align="right">(<a href="#readme-top">back to top</a>)</div>
