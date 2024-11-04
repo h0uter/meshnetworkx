@@ -16,7 +16,7 @@
   <p align="center">
     Networkx Graphs synced across devices using Zenoh.
     <br />
-    <!-- <a href="https://h0uter.github.io/humid"><strong>Explore the docs »</strong></a> -->
+    <a href="https://h0uter.github.io/meshnetworkx/"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/h0uter/meshnetworkx/issues/new?labels=bug&title=New+bug+report">Report Bug</a>
