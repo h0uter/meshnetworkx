@@ -33,6 +33,7 @@
 then run the following `pip install -e ".[examples]"` to install the package.
 
 Then run an example with `python examples/main.py`
+<div align="right">(<a href="#readme-top">back to top</a>)</div>
 
 ## Why?
 
@@ -47,6 +48,8 @@ Then run an example with `python examples/main.py`
 <div align="center">
     <img src="./docs/assets/anti-entropy.gif" alt="alt text" width="450" height="whatever">
 </div>
+
+<div align="right">(<a href="#readme-top">back to top</a>)</div>
 
 ## Example
 
@@ -79,3 +82,5 @@ print(G.nodes(data=True))
 print(G.edges(data=True))
 >>> [(1, 2, {'color': 'pink'})]
 ```
+
+<div align="right">(<a href="#readme-top">back to top</a>)</div>
