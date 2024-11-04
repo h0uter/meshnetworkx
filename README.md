@@ -1,4 +1,5 @@
 <a name="readme-top"></a>
+[![text](https://img.shields.io/pypi/v/meshnetworkx?logo=python&logoColor=%23cccccc)](https://pypi.org/project/meshnetworkx/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://pre-commit.com/)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
@@ -48,7 +49,7 @@ Then run an example with `python examples/main.py`
 - The graph is stored in a zenoh storage, for more information on how zenoh keeps storages alligned (even if the network becomes partitioned and then later reconnects), [check here](https://zenoh.io/blog/2022-11-29-zenoh-alignment).
 
 <div align="center">
-    <img src="https://github.com/h0uter/meshnetworkx/blob/dcb76e89f8f74754b37af020dd457ac7a408c774/docs/assets/anti-entropy.gif?raw=true" alt="alt text" width="450" height="whatever">
+    <img src="https://raw.githubusercontent.com/h0uter/meshnetworkx/main/docs/assets/anti-entropy.gif" alt="alt text" width="450" height="whatever">
 </div>
 
 <div align="right">(<a href="#readme-top">back to top</a>)</div>
