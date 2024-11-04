@@ -10,7 +10,7 @@ import networkx as nx
 import zenoh
 
 PREFIX = "graph"
-WAIT_TIME = 0.001
+WAIT_TIME = 0.0001
 
 
 class MeshNetworkXError(Exception):
