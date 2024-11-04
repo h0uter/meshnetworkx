@@ -1,6 +1,6 @@
 [project]
 name = "meshnetworkx"
-version = "0.1.0"
+version = "0.1.1"
 description = "Sync and use a networkX graph between multiple hosts through the power of Zenoh storages."
 readme = "README.md"
 authors = [{ name = "W. Meijer", email = "houterm+meshnetworkx@gmail.com" }]
