@@ -3,11 +3,15 @@ name = "meshnetworkx"
 version = "0.1.0"
 description = "Sync and use a networkX graph between multiple hosts through the power of Zenoh storages."
 readme = "README.md"
+authors = [{ name = "W. Meijer", email = "houterm+meshnetworkx@gmail.com" }]
 requires-python = ">=3.10"
 dependencies = ["eclipse-zenoh>=1.0.0", "matplotlib>=3.9.2", "networkx>=3.4.1"]
 
 [project.scripts]
 
+[project.urls]
+Source = "https://github.com/h0uter/meshnetworkx"
+Issues = "https://github.com/h0uter/meshnetworkx/issues"
 
 [project.optional-dependencies]
 test = ["pytest>=8.3.3"]
