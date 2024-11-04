@@ -176,7 +176,7 @@ def test_mnx_to_nx():
 
     assert sorted(G.nodes()) == sorted(G2.nodes())
     assert sorted(G.edges()) == sorted(G2.edges())
-    
+
     G.clear()
     G.close()
 
@@ -222,7 +222,7 @@ def test_nx_to_zgraph_to_nx():
 
     assert sorted(G.nodes()) == sorted(G2.nodes())
     assert sorted(G.edges()) == sorted(G2.edges())
-    
+
     Z.clear()
     Z.close()
 
