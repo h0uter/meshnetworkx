@@ -40,6 +40,8 @@ Then run an example with `python examples/main.py`
 - If you model your application domain as a graph, this package makes it easy to run on multiple devices and automatically sync the graph between them.
 - It is a drop-in replacement for networkx, so you can use all the networkx methods on the graph.
 
+<div align="right">(<a href="#readme-top">back to top</a>)</div>
+
 ## How?
 
 - It is an abstraction on top of the Zenoh protocol, which is a very efficient protocol for IoT applications.
