@@ -103,4 +103,5 @@ def _cleanup():
 
 app.on_shutdown(_cleanup)
 
-ui.run()
+port = 8080 if MACHINE == "1" else 8081
+ui.run(port=port)
