@@ -1,6 +1,7 @@
 """This module demonstrates a simple NiceGUI application with a mesh network graph."""
 
 import os
+import pickle
 
 from humid import hfid
 from nicegui import app, run, ui
@@ -37,7 +38,7 @@ def _clear_rendered_points():
 
 
 def _say_hello():
-    M.publish("hello", 1)
+    M.publish("hello", pickle.dumps("hello"))
 
 
 with ui.row().classes("w-full"):
