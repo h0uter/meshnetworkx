@@ -9,6 +9,7 @@ import json
 import os
 import pickle
 import time
+from collections.abc import Callable
 from typing import Any
 
 import matplotlib.pyplot as plt
@@ -75,9 +76,37 @@ class GraphZ:
         # tell zenoh to connect to local router,
         # cause multicast scouting does not work in docker outside of linux host.
         # cfg.insert_json5("connect/endpoints", json.dumps(["tcp/localhost:7447"]))
-        cfg.insert_json5("connect/endpoints", json.dumps(_get_endpoints()))
+        endpoints = _get_endpoints()
+        print(f"Connecting to endpoints: {endpoints}")
+
+        cfg.insert_json5("connect/endpoints", json.dumps(endpoints))
 
         self._z = zenoh.open(cfg)
+
+        print(f"I am {self._z.info.zid()}")
+        print(f"Peers: {self._z.info.peers_zid()}")
+        print(f"Routers: {self._z.info.routers_zid()}")
+
+    def publish(self, key: str, data: bytes) -> None:
+        """Publishes data to a key in Zenoh.
+
+        Args:
+            key: The key to publish the data to.
+            data: The data to publish.
+        """
+        self._z.put(key, data)
+
+    def subscribe(self, key: str, cb: Callable) -> zenoh.Subscriber:
+        """Subscribes to a key in Zenoh.
+
+        Args:
+            key: The key to subscribe to.
+            cb: The callback function to call when data is received.
+
+        Returns:
+            A Zenoh subscriber.
+        """
+        return self._z.declare_subscriber(key, handler=cb)
 
     @staticmethod
     def from_networkx(g: nx.Graph) -> "GraphZ":
