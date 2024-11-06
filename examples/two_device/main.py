@@ -1,5 +1,7 @@
 """This module demonstrates a simple NiceGUI application with a mesh network graph."""
 
+import os
+
 from humid import hfid
 from nicegui import app, run, ui
 
@@ -11,13 +13,15 @@ M = mx.GraphZ()
 RENDERED_POINTS: dict[tuple[float, float], ui.scene.sphere] = {}
 
 nr_nodes = ui.label("nr_nodes")
+MACHINE = os.getenv("MACHINE", "1")
 
 
 def _add_node(i=1):
     NUMBER = 50
     div = i // NUMBER
     remaining = i % NUMBER
-    M.add_node(hfid(), pos=(div, remaining))
+    x = div if MACHINE == "1" else -div
+    M.add_node(hfid(), pos=(x, remaining))
 
 
 def _add_n_nodes():
@@ -62,7 +66,8 @@ def _draw(nodes):
     sdiff = sorted(diff)
     # for x, y in read - RENDERED_POINTS.keys():
     for x, y in sdiff:
-        actor = scene.sphere(radius=0.2).move(x, y, 0).material(color="red")
+        color = "red" if MACHINE == "1" else "blue"
+        actor = scene.sphere(radius=0.2).move(x, y, 0).material(color=color)
         RENDERED_POINTS[(x, y)] = actor
 
     for x, y in RENDERED_POINTS.keys() - read:
