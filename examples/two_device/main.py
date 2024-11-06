@@ -58,9 +58,11 @@ def _draw(nodes):
     for _, data in nodes:
         x, y = data["pos"]
         read.add((x, y))
-
-    for x, y in read - RENDERED_POINTS.keys():
-        actor = scene.sphere().move(x, y, 0).material(color="red")
+    diff = read - RENDERED_POINTS.keys()
+    sdiff = sorted(diff)
+    # for x, y in read - RENDERED_POINTS.keys():
+    for x, y in sdiff:
+        actor = scene.sphere(radius=0.2).move(x, y, 0).material(color="red")
         RENDERED_POINTS[(x, y)] = actor
 
     for x, y in RENDERED_POINTS.keys() - read:
