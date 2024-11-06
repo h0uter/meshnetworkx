@@ -27,6 +27,8 @@ def _add_node(i=1):
     remaining = i % NUMBER
     x = div if MACHINE == "1" else -div
     M.add_node(hfid(), pos=(x, remaining))
+    if i == 1:
+        ui.notify(f"Added node {i}")
 
 
 def _add_n_nodes():
