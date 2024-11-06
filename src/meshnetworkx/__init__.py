@@ -6,6 +6,7 @@ Usage:
 """
 
 import json
+import os
 import pickle
 import time
 from typing import Any
@@ -26,6 +27,16 @@ class MeshNetworkXError(Exception):
 
 def _totopic(key: str):
     return f"{PREFIX}/{key}"
+
+
+def _get_endpoints() -> list[str]:
+    endpoints = os.getenv("ZENOH_ENDPOINTS", None)
+
+    if not endpoints:
+        return []
+
+    endpoints = endpoints.replace(" ", "").split(",")
+    return endpoints
 
 
 class NodeView:
@@ -63,7 +74,8 @@ class GraphZ:
 
         # tell zenoh to connect to local router,
         # cause multicast scouting does not work in docker outside of linux host.
-        cfg.insert_json5("connect/endpoints", json.dumps(["tcp/localhost:7447"]))
+        # cfg.insert_json5("connect/endpoints", json.dumps(["tcp/localhost:7447"]))
+        cfg.insert_json5("connect/endpoints", json.dumps(_get_endpoints()))
 
         self._z = zenoh.open(cfg)
 
