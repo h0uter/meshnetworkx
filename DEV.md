@@ -36,3 +36,6 @@
 - zenohx
 - zenoh-graph
 - zenoh-graphx
+
+## Testing
+- testing with a single storage looks ok
