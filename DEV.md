@@ -12,6 +12,7 @@
   - [ ] create two line graphs and see how fast they sync.
 - [ ] can we use NetworkX builtins for `.edges` property?
   - [ ] convert to networkx graph and use the builtins.
+- [ ] set reliability of messages to guaranteed.
 
 ## requirements
 
