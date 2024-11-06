@@ -29,7 +29,7 @@ services:
     command: ["uv", "run", "examples/two_device/main.py"]
     depends_on:
         - zenoh
-    environment:
-      ZENOH_ENDPOINTS: tcp/localhost:7447
+    # environment:
+    #   ZENOH_ENDPOINTS: tcp/localhost:7447
     ports:
       - 8080:8080
