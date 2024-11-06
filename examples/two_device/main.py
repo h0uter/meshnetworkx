@@ -15,6 +15,8 @@ RENDERED_POINTS: dict[tuple[float, float], ui.scene.sphere] = {}
 nr_nodes = ui.label("nr_nodes")
 MACHINE = os.getenv("MACHINE", "1")
 
+M.subscribe("hello", lambda: ui.notify("hello received"))
+
 
 def _add_node(i=1):
     NUMBER = 50
@@ -34,7 +36,12 @@ def _clear_rendered_points():
     scene.clear()
 
 
+def _say_hello():
+    M.publish("hello", 1)
+
+
 with ui.row().classes("w-full"):
+    ui.button("say hello", on_click=_say_hello)
     ui.button("clear GraphZ", on_click=M.clear)
     ui.button("add Node", on_click=_add_node)
     ui.button(f"add {N_NODES} Nodes", on_click=_add_n_nodes)
