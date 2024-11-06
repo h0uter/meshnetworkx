@@ -29,6 +29,7 @@ services:
     command: ["uv", "run", "examples/two_device/main.py"]
     volumes:
       - ./examples:/workdir/examples/
+      - ./src:/workdir/src/
     depends_on:
         - zenoh
     # environment:
