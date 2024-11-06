@@ -35,5 +35,6 @@ services:
     environment:
       # ZENOH_ENDPOINTS: tcp/localhost:7447
       MACHINE: 1
+      PYTHONUNBUFFERED: 1
     ports:
       - 8080:8080
