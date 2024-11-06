@@ -16,7 +16,7 @@ RENDERED_POINTS: dict[tuple[float, float], ui.scene.sphere] = {}
 nr_nodes = ui.label("nr_nodes")
 MACHINE = os.getenv("MACHINE", "1")
 
-M.subscribe("hello", lambda: ui.notify("hello received"))
+M.subscribe("hello", lambda _: ui.notify("hello received"))
 
 
 def _add_node(i=1):
