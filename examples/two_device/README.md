@@ -11,13 +11,15 @@ graph LR
 ```
 
 ## How to run
-
-- [ ] docker compose up
-- [ ] click play
-- [ ] disable and reenable network
+- [ ] ssh into machine 2 from 1
+- [ ] docker compose up on both machines
+- [ ] disable network on machine 2
+- [ ] add nodes on machine 1
+- [ ] reenable network on machine 2
 - [ ] see the sync occur
 
 ## Steps
 
-- [ ] create compose file with sep networks
-- [ ] create viz of graph
+- [x] create viz of graph
+- [ ] make endpoint configurable
+- [ ] make port configurable, can also do at docker compose level
