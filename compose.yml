@@ -27,6 +27,8 @@ services:
     init: true
     build: .
     command: ["uv", "run", "examples/two_device/main.py"]
+    volumes:
+      - ./examples:/workdir/examples/
     depends_on:
         - zenoh
     # environment:
