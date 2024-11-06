@@ -1,7 +1,7 @@
 services:
   zenoh:
     init: true
-    image: eclipse/zenoh
+    image: eclipse/zenoh:1.0.1
     ports:
       - 7447:7447
       - 8000:8000
@@ -14,7 +14,7 @@ services:
     profiles:
         - donotstart
     init: true
-    image: eclipse/zenoh
+    image: eclipse/zenoh:1.0.1
     ports:
       - 7447:7447
       - 8000:8000
