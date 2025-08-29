@@ -30,10 +30,11 @@ services:
     volumes:
       - ./examples:/workdir/examples/
       - ./src:/workdir/src/
-    depends_on:
-        - zenoh
+    # depends_on:
+    #     - zenoh
     environment:
       # ZENOH_ENDPOINTS: tcp/localhost:7447
+      ZENOH_ENDPOINTS: tcp/localhost:7447, tcp/forward-observer.dafcd4amc8fqezbs.westeurope.azurecontainer.io:7447
       MACHINE: 1
       PYTHONUNBUFFERED: 1
     ports:
